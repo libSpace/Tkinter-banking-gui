@@ -86,12 +86,22 @@ def login_function():
             file = open(username, "r")
             file_data=file.read()
             file_data.split("\n")
-            password = file_data[1]
+            password = file_data[31:36] #RegEx for password needs to be set, for now its 4 digits
+            password =int(password)
             #account dash
-            if login_password == password:
+            if int(login_password) == password:
                 print("Login success")
-            print(file_data)
+                print(file_data)
+                print(int(password))
+                login_notif.config(fg ="green", text="Successfully logged in")
+                login_screen.destroy()
+                account_dashboard = Toplevel(root)
+                account_dashboard.title("Dashboard")
+            else:
+                login_notif.config(fg ="red", text="Wrong password or username!*")
+            
             return
+    
     
 def login():
     #Vars
