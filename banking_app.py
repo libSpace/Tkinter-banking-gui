@@ -88,7 +88,8 @@ def login_function():
             file_data.split("\n")
             password = file_data[1]
             #account dash
-            if login_password == password
+            if login_password == password:
+                print("Login success")
             print(file_data)
             return
     
