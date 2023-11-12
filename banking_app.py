@@ -22,6 +22,12 @@ def register():
     Label(register_screen, text="Gender", font=("calibri",12)).grid(row=3,sticky=W,pady=10)
     Label(register_screen, text="password", font=("calibri",12)).grid(row=4,sticky=W,pady=10)
     
+    #Entries
+    Entry(register_screen,textvariable=t_name).grid(row=1,column=0)
+    Entry(register_screen,textvariable=t_age).grid(row=1,column=0)
+    Entry(register_screen,textvariable=t_gender).grid(row=1,column=0)
+    Entry(register_screen,textvariable=t_password).grid(row=1,column=0)
+    
 def login():
     print("This is a login page")
 
