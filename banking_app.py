@@ -8,14 +8,38 @@ root.title("Banking app")
 
 #Functions
 def finish_reg():
-    print("Done")
+    name = temp_name.get()#We use get() method to get an store
+    age = temp_age.get()
+    gender = temp_gender.get()
+    password = temp_password.get()
+    all_accounts = os.listdir()
+    print(all_accounts)
+    
+    if name== "" or age == "" or gender == "" or password =="":
+        notif.config(fg ="red", text="All fields are required*")
+        return
 
+    for name_check in all_accounts:
+        if name == name_check:
+            notif.config(fg ="red", text="Account already exists")
+            return
+        else:
+            new_file = open(name,"w")
+            new_file.write(f"Name       : {name}\n")
+            new_file.write(f"Password   : {password} \n")
+            new_file.write(f"Age        : {age}\n")
+            new_file.write(f"Gender     : {gender}\n")
+            new_file.close()
+            notif.config(fg ="green", text="Account has been created succesfully")
+        
+    
 def register():
     #register vars
     global temp_name
     global temp_age
     global temp_gender
     global temp_password
+    global notif
     temp_name = StringVar()
     temp_age = StringVar()
     temp_gender = StringVar()
@@ -34,6 +58,9 @@ def register():
     Label(register_screen, text="Age      ", font=("calibri",12)).grid(row=2,sticky=W)
     Label(register_screen, text="Gender   ", font=("calibri",12)).grid(row=3,sticky=W)
     Label(register_screen, text="password ", font=("calibri",12)).grid(row=4,sticky=W)
+    notif = Label(register_screen, font=("calibri",12))
+    notif.grid(row=6,sticky=N,pady=10)
+    
     
     #Entries
     Entry(register_screen,textvariable=temp_name).grid(row=1,column=0,padx=70)#Relative padding
