@@ -79,6 +79,7 @@ def register():
     Button(register_screen, text="Register", command=finish_reg, font=("calibri",12)).grid(row= 5, sticky=N, pady = 10)
     
 def login_function():
+    global login_name
     all_accounts = os.listdir()
     print(all_accounts)
     
@@ -112,9 +113,9 @@ def login_function():
                 Label(account_dashboard, text="Welcome\n"+login_name, font=("calibri",12)).grid(row=1,sticky=N,padx=10)
                 
                 #Buttons
-                Button(account_dashboard,text="Personal details", font=("calibri",12),width=30).grid(row=2,sticky=N,padx=10)
-                Button(account_dashboard,text="Deposit", font=("calibri",12),width=30).grid(row=3,sticky=N,padx=10)
-                Button(account_dashboard,text="Withdraw", font=("calibri",12),width=30).grid(row=4,sticky=N,padx=10)
+                Button(account_dashboard,text="Personal details", font=("calibri",12),width=30, command= personal_details).grid(row=2,sticky=N,padx=10)
+                Button(account_dashboard,text="Deposit", font=("calibri",12),width=30,command=deposits).grid(row=3,sticky=N,padx=10)
+                Button(account_dashboard,text="Withdraw" ,font=("calibri",12),width=30,command=withdrawals).grid(row=4,sticky=N,padx=10)
                 
                 #
                 Label(account_dashboard).grid(row=5,sticky=N,pady=10)
@@ -126,6 +127,23 @@ def login_function():
         else:
             login_notif.config(fg ="red", text="Username/Acount does not exist*")
     
+def deposits():
+    print("deposits")
+    
+    
+def withdrawals():
+    print("Withdraw")
+    
+    
+def personal_details():
+    #variables 
+    personal_det = open(f"{login_name}.txt", "r")
+    pd = personal_det.read()
+    print(pd) 
+    Personal = Toplevel(root)
+    Personal.title(f"The Mint")
+    
+    Label(Personal, text=f"Hi, {login_name}, Below is your details", font=("calibri",12)).grid(row=0,sticky=N,pady=10)
     
 def login():
     #Vars
