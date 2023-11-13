@@ -1,5 +1,0 @@
-Name       : Mpho
-Password   : 1234 
-Age        : 22
-Gender     : male
-Balance    : R0

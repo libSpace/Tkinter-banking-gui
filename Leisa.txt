@@ -1,5 +1,0 @@
-Name       : Leisa
-Password   : 112233qw 
-Age        : 21
-Gender     : female
-Balance    : R0

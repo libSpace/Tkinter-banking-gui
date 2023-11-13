@@ -8,6 +8,8 @@ root.title("Banking app")
 
 #Functions
 def finish_reg():
+    global amount
+    amount = int(0)
     name = temp_name.get()#We use get() method to get an store
     id_number = temp_id.get()
     gender = temp_gender.get()
@@ -26,9 +28,11 @@ def finish_reg():
         else:
             new_file = open(f"{name}.txt","w")
             new_file_acc = open(f"{name}","w")
+            statement = open(f"{name}'s statement","w")
             new_file.write(f"Name       : {name}\n")
             new_file.write(f"Password   : {password} \n")
             new_file_acc.write(password)
+            statement.write(f"Balance = R{amount}")
             new_file.write(f"Age        : {id_number}\n")
             new_file.write(f"Gender     : {gender}\n")
             new_file.write(f"Balance    : R0")
@@ -41,6 +45,7 @@ def finish_reg():
     
 def register():
     #register vars
+    
     global temp_name
     global temp_id
     global temp_gender
@@ -141,6 +146,7 @@ def personal_details():
     Label(Personal, text=f"Hi, {login_name}, Below is your details", font=("calibri",12)).grid(row=0,sticky=N,pady=10)
     Label(Personal, text=pd, font=("calibri",10)).grid(row=1,sticky=N,pady=10)
 
+    
 def deposits():
     global deposit_amount
     deposit_amount = StringVar().get()
@@ -154,6 +160,12 @@ def deposits():
     Label(deposits, text="Deposits sectction", font=("calibri",8)).grid(row=2,sticky=N,pady=10)
     
     Entry(deposits,textvariable=deposit_amount).grid(row=3,padx=5,pady=15)
+    Button(login_screen, text="Login", command=login_function, font=("calibri",12), width=16).grid(row= 3, sticky=W, pady = 5)
+    
+    print(deposit_amount)
+    
+def add_deposit():
+    deposit_file = open()
     
 def withdrawals():
     print("Withdraw")
