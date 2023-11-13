@@ -1,0 +1,5 @@
+Name       : Katlego
+Password   : 1122qw 
+Age        : 20
+Gender     : male
+Balance    : R0

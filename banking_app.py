@@ -9,13 +9,13 @@ root.title("Banking app")
 #Functions
 def finish_reg():
     name = temp_name.get()#We use get() method to get an store
-    age = temp_age.get()
+    id_number = temp_id.get()
     gender = temp_gender.get()
     password = temp_password.get()
     all_accounts = os.listdir()
     print(all_accounts)
     
-    if name== "" or age == "" or gender == "" or password =="":
+    if name== "" or id_number == "" or gender == "" or password =="":
         notif.config(fg ="red", text="All fields are required*")
         return
 
@@ -29,7 +29,7 @@ def finish_reg():
             new_file.write(f"Name       : {name}\n")
             new_file.write(f"Password   : {password} \n")
             new_file_acc.write(password)
-            new_file.write(f"Age        : {age}\n")
+            new_file.write(f"Age        : {id_number}\n")
             new_file.write(f"Gender     : {gender}\n")
             new_file.write(f"Balance    : R0")
             new_file.close()
@@ -42,13 +42,13 @@ def finish_reg():
 def register():
     #register vars
     global temp_name
-    global temp_age
+    global temp_id
     global temp_gender
     global temp_password
     global notif
     global register_screen
     temp_name = StringVar()
-    temp_age = StringVar()
+    temp_id = StringVar()
     temp_gender = StringVar()
     temp_password = StringVar()
     '''
@@ -62,7 +62,7 @@ def register():
     #Labels
     Label(register_screen, text="Enter your details to register", font=("calibri",12)).grid(row=0,sticky=N,pady=10)
     Label(register_screen, text="Name     ", font=("calibri",12)).grid(row=1,sticky=W)
-    Label(register_screen, text="Age      ", font=("calibri",12)).grid(row=2,sticky=W)
+    Label(register_screen, text="ID no.      ", font=("calibri",12)).grid(row=2,sticky=W)
     Label(register_screen, text="Gender   ", font=("calibri",12)).grid(row=3,sticky=W)
     Label(register_screen, text="password ", font=("calibri",12)).grid(row=4,sticky=W)
     notif = Label(register_screen, font=("calibri",12))
@@ -71,7 +71,7 @@ def register():
     
     #Entries
     Entry(register_screen,textvariable=temp_name).grid(row=1,column=0,padx=70)#Relative padding
-    Entry(register_screen,textvariable=temp_age).grid(row=2,column=0)
+    Entry(register_screen,textvariable=temp_id).grid(row=2,column=0)
     Entry(register_screen,textvariable=temp_gender).grid(row=3,column=0)
     Entry(register_screen,textvariable=temp_password, show="*").grid(row=4,column=0)
     
@@ -116,6 +116,9 @@ def login_function():
                 Button(account_dashboard,text="Personal details", font=("calibri",12),width=30, command= personal_details).grid(row=2,sticky=N,padx=10)
                 Button(account_dashboard,text="Deposit", font=("calibri",12),width=30,command=deposits).grid(row=3,sticky=N,padx=10)
                 Button(account_dashboard,text="Withdraw" ,font=("calibri",12),width=30,command=withdrawals).grid(row=4,sticky=N,padx=10)
+                Button(account_dashboard,text="Transaction log" ,font=("calibri",12),width=30,command=transaction).grid(row=5,sticky=N,padx=10)
+                Button(account_dashboard,text="Investments" ,font=("calibri",12),width=30,command=investments).grid(row=6,sticky=N,padx=10)
+                Button(account_dashboard,text="Home Loan" ,font=("calibri",12),width=30,command=bond).grid(row=7,sticky=N,padx=10)
                 
                 #
                 Label(account_dashboard).grid(row=5,sticky=N,pady=10)
@@ -126,15 +129,7 @@ def login_function():
             return
         else:
             login_notif.config(fg ="red", text="Username/Acount does not exist*")
-    
-def deposits():
-    print("deposits")
-    
-    
-def withdrawals():
-    print("Withdraw")
-    
-    
+        
 def personal_details():
     #variables 
     personal_det = open(f"{login_name}.txt", "r")
@@ -144,6 +139,33 @@ def personal_details():
     Personal.title(f"The Mint")
     
     Label(Personal, text=f"Hi, {login_name}, Below is your details", font=("calibri",12)).grid(row=0,sticky=N,pady=10)
+    Label(Personal, text=pd, font=("calibri",10)).grid(row=1,sticky=N,pady=10)
+
+def deposits():
+    global deposit_amount
+    deposit_amount = StringVar().get()
+    print("deposits")
+    deposits = Toplevel(root)
+    deposits.title(f"Deposits")
+    
+    
+    Label(deposits, text=f"Hi, {login_name}, lets deposit", font=("calibri",12)).grid(row=0,sticky=N,pady=10)
+    Label(deposits, text=f"Balance = R100 000 000.00", font=("calibri",11)).grid(row=1,sticky=N,pady=10)
+    Label(deposits, text="Deposits sectction", font=("calibri",8)).grid(row=2,sticky=N,pady=10)
+    
+    Entry(deposits,textvariable=deposit_amount).grid(row=3,padx=5,pady=15)
+    
+def withdrawals():
+    print("Withdraw")
+
+def transaction():
+    print("Transaction log")
+
+def investments():
+    print("Investments")
+    
+def bond():
+    print("Home loan")
     
 def login():
     #Vars
