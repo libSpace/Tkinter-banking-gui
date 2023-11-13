@@ -1,0 +1,5 @@
+Name       : Kwakwa
+Password   : 12345 
+Age        : 21
+Gender     : male
+Balance    : R0

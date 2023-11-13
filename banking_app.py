@@ -161,8 +161,8 @@ img = img.resize((150,150))
 img = ImageTk.PhotoImage(img)
 
 #Labels
-Label(root, text ="Custom Banking betta", font=("arial",14)).grid(row=0,sticky=N,pady=10)
-Label(root, text ="The most secure bank, CI solutions", font=("arial",14)).grid(row=1,sticky=N)
+Label(root, text ="Creative Innovators Bank", font=("arial",14)).grid(row=0,sticky=N,pady=10)
+Label(root, text ="The Mint", font=("arial",10)).grid(row=1,sticky=N)
 
 #Label image
 Label(root,image=img).grid(row=2,sticky=N,pady=15)
