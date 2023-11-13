@@ -24,7 +24,7 @@ def finish_reg():
             notif.config(fg ="red", text="Account already exists")
             return
         else:
-            new_file = open(name,"w")
+            new_file = open(f"{name}.txt","w")
             new_file.write(f"Name       : {name}\n")
             new_file.write(f"Password   : {password} \n")
             new_file.write(f"Age        : {age}\n")
@@ -74,33 +74,52 @@ def register():
     
 def login_function():
     all_accounts = os.listdir()
+    print(all_accounts)
     
     login_name = temp_login_name.get()
     login_password = temp_login_password.get()
     if login_name =="" or login_password =="":
         login_notif.config(fg ="red", text="All fields are required*")
         return
-    
+    print("###########login name##############")
+    print(login_name)
+    print("###########login name##############")
+          
     for username in all_accounts:
-        if login_name == username:
-            file = open(username, "r")
+        print("##################")
+        print(username)
+        print("######################")
+        if login_name+".txt" == username:
+            print("success for login name")
+            file = open(f"{login_name}.txt", "r")
             file_data=file.read()
             file_data.split("\n")
-            password = file_data[31:36] #RegEx for password needs to be set, for now its 4 digits
-            password =int(password)
+            print("test1")
+            print(file_data)
+            print("test2")
+            content = [line.strip() for line in file_data]
+            user_secure = [element.strip().replace(" ", "") for element in file_data]
+            print(content)
+            print(user_secure)
+            # password = file_data[31:36] #RegEx for password needs to be set, for now its 4 digits
+            # login_pass = file_data[]
+            
+            print(password)
             #account dash
-            if int(login_password) == password:
+            if (login_password) == str(password):
                 print("Login success")
                 print(file_data)
-                print(int(password))
+                print(password)
                 login_notif.config(fg ="green", text="Successfully logged in")
                 login_screen.destroy()
                 account_dashboard = Toplevel(root)
                 account_dashboard.title("Dashboard")
             else:
-                login_notif.config(fg ="red", text="Wrong password or username!*")
+                login_notif.config(fg ="red", text="Wrong password!*")
             
             return
+        else:
+            login_notif.config(fg ="red", text="Username/Acount does not exist*")
     
     
 def login():

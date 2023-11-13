@@ -1,0 +1,5 @@
+Name       : mphoise
+Password   : 1212 
+Age        : 22
+Gender     : 22
+Balance    : R0
