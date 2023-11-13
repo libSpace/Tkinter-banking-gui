@@ -1,0 +1,5 @@
+Name       : python
+Password   : 12qw 
+Age        : 22
+Gender     : male
+Balance    : R0

@@ -31,6 +31,9 @@ def finish_reg():
             new_file.write(f"Gender     : {gender}\n")
             new_file.write(f"Balance    : R0")
             new_file.close()
+            
+            acount_file = open(os.path.join(acountpasswordfile, f"{name}{password}.txt"),"w")
+            acount_file.write(password)
             notif.config(fg ="green", text="Account has been created succesfully")
         
     
@@ -94,22 +97,12 @@ def login_function():
             file = open(f"{login_name}.txt", "r")
             file_data=file.read()
             file_data.split("\n")
-            print("test1")
             print(file_data)
-            print("test2")
-            content = [line.strip() for line in file_data]
-            user_secure = [element.strip().replace(" ", "") for element in file_data]
-            print(content)
-            print(user_secure)
-            # password = file_data[31:36] #RegEx for password needs to be set, for now its 4 digits
-            # login_pass = file_data[]
             
-            print(password)
+        
             #account dash
             if (login_password) == str(password):
                 print("Login success")
-                print(file_data)
-                print(password)
                 login_notif.config(fg ="green", text="Successfully logged in")
                 login_screen.destroy()
                 account_dashboard = Toplevel(root)
