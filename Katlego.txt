@@ -1,5 +1,0 @@
-Name       : Katlego
-Password   : 12qw12 
-Age        : 12
-Gender     : bi
-Balance    : R0

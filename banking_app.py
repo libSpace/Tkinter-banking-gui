@@ -25,16 +25,18 @@ def finish_reg():
             return
         else:
             new_file = open(f"{name}.txt","w")
+            new_file_acc = open(f"{name}","w")
             new_file.write(f"Name       : {name}\n")
             new_file.write(f"Password   : {password} \n")
+            new_file_acc.write(password)
             new_file.write(f"Age        : {age}\n")
             new_file.write(f"Gender     : {gender}\n")
             new_file.write(f"Balance    : R0")
             new_file.close()
+            # new_file_acc.close()
             
-            acount_file = open(os.path.join(acountpasswordfile, f"{name}{password}.txt"),"w")
-            acount_file.write(password)
             notif.config(fg ="green", text="Account has been created succesfully")
+            register_screen.destroy()
         
     
 def register():
@@ -44,6 +46,7 @@ def register():
     global temp_gender
     global temp_password
     global notif
+    global register_screen
     temp_name = StringVar()
     temp_age = StringVar()
     temp_gender = StringVar()
@@ -84,29 +87,38 @@ def login_function():
     if login_name =="" or login_password =="":
         login_notif.config(fg ="red", text="All fields are required*")
         return
-    print("###########login name##############")
-    print(login_name)
-    print("###########login name##############")
           
     for username in all_accounts:
-        print("##################")
-        print(username)
-        print("######################")
         if login_name+".txt" == username:
             print("success for login name")
             file = open(f"{login_name}.txt", "r")
+            file_security = open(login_name,"r")
             file_data=file.read()
             file_data.split("\n")
-            print(file_data)
+            file_security_data =file_security.read().split()
+            user_password = file_security_data[0]
+            
             
         
             #account dash
-            if (login_password) == str(password):
-                print("Login success")
+            if login_password == user_password:
                 login_notif.config(fg ="green", text="Successfully logged in")
                 login_screen.destroy()
                 account_dashboard = Toplevel(root)
                 account_dashboard.title("Dashboard")
+                
+                #Labels
+                Label(account_dashboard, text="Account dashboard", font=("calibri",15)).grid(row=0,sticky=N,padx=10)
+                Label(account_dashboard, text="Welcome\n"+login_name, font=("calibri",12)).grid(row=1,sticky=N,padx=10)
+                
+                #Buttons
+                Button(account_dashboard,text="Personal details", font=("calibri",12),width=30).grid(row=2,sticky=N,padx=10)
+                Button(account_dashboard,text="Deposit", font=("calibri",12),width=30).grid(row=3,sticky=N,padx=10)
+                Button(account_dashboard,text="Withdraw", font=("calibri",12),width=30).grid(row=4,sticky=N,padx=10)
+                
+                #
+                Label(account_dashboard).grid(row=5,sticky=N,pady=10)
+                return
             else:
                 login_notif.config(fg ="red", text="Wrong password!*")
             
@@ -161,4 +173,3 @@ Button(root, text="Login", font=("calibri",12),width=20, command=login).grid(row
 
 
 root.mainloop()
-

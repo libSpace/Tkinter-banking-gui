@@ -1,5 +1,0 @@
-Name       : Dyasi
-Password   : 1234 
-Age        : 40
-Gender     : female
-Balance    : R0

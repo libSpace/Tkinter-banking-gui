@@ -1,5 +1,0 @@
-Name       : Pheladi
-Password   : 1212 
-Age        : 22
-Gender     : female
-Balance    : R0

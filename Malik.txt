@@ -1,4 +1,5 @@
 Name       : Malik
-Password   : 12345 
-Age        : 12
-Gender     : Male
+Password   : 1122qw 
+Age        : 22
+Gender     : male
+Balance    : R0
