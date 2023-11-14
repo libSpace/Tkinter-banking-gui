@@ -28,7 +28,7 @@ def finish_reg():
         else:
             new_file = open(f"{name}.txt","w")
             new_file_acc = open(f"{name}","w")
-            statement = open(f"{name}_balance_update","w")
+            statement = open(f"{name}_balance_update.txt","w")
             new_file.write(f"Name       : {name}\n")
             new_file.write(f"Password   : {password} \n")
             new_file_acc.write(password)
@@ -171,19 +171,36 @@ def add_deposit():
     deposit_amount = d_amount.get()
     print(deposit_amount)
     print("add deposits")
-    deposit_file = open(login_name+"_balance_update", "r")
+    deposit_file = open(login_name+"_balance_update.txt", "r")
     dp = deposit_file.readlines()
     result_list = [word.split('R', 1)[-1] for word in dp if 'R' in word]
 
     bal = result_list[0]
-    balance = bal.replace(" ","").strip()
+    bal_fl =float(bal)
     deposit_amount = deposit_amount.replace(" ","").strip()
     print(deposit_amount)
     if deposit_amount.replace('.','',1).isdigit():
         deposit_amount = float(deposit_amount.replace('.','',1).strip())
         if deposit_amount >0 and deposit_amount%10 == 0:
+            bal_fl += deposit_amount
+            updated = f"Balance = R{bal_fl}"
+            print(updated)
+            #Lets open the file to update the balance
+            balance_file = open(login_name+"_balance_update.txt", "r")
+            bf = balance_file.readlines()
+            print("before")
+            print(bf)
+            #Deleting infor
+            balance_file_update = open(login_name+"_balance_update.txt", "w")
+            balance_file_update.write(updated)
+            
+            #test
+            bfu = open(login_name+"_balance_update.txt", "r")
+            bfu_list=bfu.read()
+            print("After")
+            print(bfu_list)
+            
             deposit_notif.config(fg ="green", text="Success ")
-            print("It is a digit and is greater than zero and it is a multiple of 10")
         else:
             deposit_notif.config(fg ="red", text="You can not deposit less than 0 or coins ")
     else:
