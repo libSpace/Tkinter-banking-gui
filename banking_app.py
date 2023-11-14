@@ -149,6 +149,7 @@ def personal_details():
     
 def deposits():
     global d_amount
+    global deposit_notif
     d_amount = StringVar()
     deposits = Toplevel(root)
     deposits.title(f"Deposits")
@@ -158,9 +159,12 @@ def deposits():
     Label(deposits, text=f"Balance = R100 000 000.00", font=("calibri",11)).grid(row=1,sticky=N,pady=10)
     Label(deposits, text="Deposits sectction", font=("calibri",8)).grid(row=2,sticky=N,pady=10)
     
+    
     Entry(deposits,textvariable=d_amount).grid(row=3,padx=5,pady=15)
     Button(deposits, text="Login", command=add_deposit, font=("calibri",12), width=16).grid(row= 4, sticky=W, pady = 5)
     
+    deposit_notif = Label(deposits, font=("calibri",12))
+    deposit_notif.grid(row=5,sticky=N,pady=10)
     
     
 def add_deposit():
@@ -173,8 +177,17 @@ def add_deposit():
 
     balance = result_list[0]
     balance = balance.replace(" ","")
-    print(dp)
-    print(balance)
+    if deposit_amount.replace(".","",1).isdigit():
+        deposit_amount = float(deposit_amount.replace('.','',1).strip())
+        if deposit_amount >0 and deposit_amount%10 == 0:
+            deposit_notif.config(fg ="red", text="Success ")
+            print("It is a digit and is greater than zero and it is a multiple of 10")
+        else:
+            deposit_notif.config(fg ="red", text="You can not deposit less than 0 or coins ")
+    else:
+        deposit_notif.config(fg ="red", text="Invalid input")
+    # print(dp)
+    # print(balance+deposit_amount)
         
 def withdrawals():
     print("Withdraw")
