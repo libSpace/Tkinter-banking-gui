@@ -28,7 +28,7 @@ def finish_reg():
         else:
             new_file = open(f"{name}.txt","w")
             new_file_acc = open(f"{name}","w")
-            statement = open(f"{name}'s statement","w")
+            statement = open(f"{name}_balance_update","w")
             new_file.write(f"Name       : {name}\n")
             new_file.write(f"Password   : {password} \n")
             new_file_acc.write(password)
@@ -148,9 +148,8 @@ def personal_details():
 
     
 def deposits():
-    global deposit_amount
-    deposit_amount = StringVar().get()
-    print("deposits")
+    global d_amount
+    d_amount = StringVar()
     deposits = Toplevel(root)
     deposits.title(f"Deposits")
     
@@ -159,14 +158,24 @@ def deposits():
     Label(deposits, text=f"Balance = R100 000 000.00", font=("calibri",11)).grid(row=1,sticky=N,pady=10)
     Label(deposits, text="Deposits sectction", font=("calibri",8)).grid(row=2,sticky=N,pady=10)
     
-    Entry(deposits,textvariable=deposit_amount).grid(row=3,padx=5,pady=15)
-    Button(login_screen, text="Login", command=login_function, font=("calibri",12), width=16).grid(row= 3, sticky=W, pady = 5)
+    Entry(deposits,textvariable=d_amount).grid(row=3,padx=5,pady=15)
+    Button(deposits, text="Login", command=add_deposit, font=("calibri",12), width=16).grid(row= 4, sticky=W, pady = 5)
     
-    print(deposit_amount)
+    
     
 def add_deposit():
-    deposit_file = open()
-    
+    deposit_amount = d_amount.get()
+    print(deposit_amount)
+    print("add deposits")
+    deposit_file = open(login_name+"_balance_update", "r")
+    dp = deposit_file.readlines()
+    result_list = [word.split('R', 1)[-1] for word in dp if 'R' in word]
+
+    balance = result_list[0]
+    balance = balance.replace(" ","")
+    print(dp)
+    print(balance)
+        
 def withdrawals():
     print("Withdraw")
 
