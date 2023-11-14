@@ -175,12 +175,14 @@ def add_deposit():
     dp = deposit_file.readlines()
     result_list = [word.split('R', 1)[-1] for word in dp if 'R' in word]
 
-    balance = result_list[0]
-    balance = balance.replace(" ","")
-    if deposit_amount.replace(".","",1).isdigit():
+    bal = result_list[0]
+    balance = bal.replace(" ","").strip()
+    deposit_amount = deposit_amount.replace(" ","").strip()
+    print(deposit_amount)
+    if deposit_amount.replace('.','',1).isdigit():
         deposit_amount = float(deposit_amount.replace('.','',1).strip())
         if deposit_amount >0 and deposit_amount%10 == 0:
-            deposit_notif.config(fg ="red", text="Success ")
+            deposit_notif.config(fg ="green", text="Success ")
             print("It is a digit and is greater than zero and it is a multiple of 10")
         else:
             deposit_notif.config(fg ="red", text="You can not deposit less than 0 or coins ")
