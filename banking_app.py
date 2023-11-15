@@ -21,7 +21,7 @@ def add_deposit():
     deposit_amount = deposit_amount.replace(" ","").strip()
     print(deposit_amount)
     if deposit_amount.replace('.','',1).isdigit():
-        deposit_amount = float(deposit_amount.replace('.','',1).strip())
+        deposit_amount = float(deposit_amount.strip())
         if deposit_amount >0 and deposit_amount%10 == 0:
             bal_fl += deposit_amount
             updated = f"Balance = R{bal_fl}"
@@ -35,22 +35,80 @@ def add_deposit():
             balance_file_update = open(login_name+"_balance_update.txt", "w")
             balance_file_update.write(updated)
             
+            print(updated)
+            balance_update_update.config(text=updated)
             #test
-            bfu = open(login_name+"_balance_update.txt", "r")
-            bfu_list=bfu.read()
-            print("After")
-            print(bfu_list)
+            # bfu = open(login_name+"_balance_update.txt", "r")
+            # bfu_list=bfu.read()
+            # print("After")
+            # print(bfu_list)
             
             
             
             deposit_notif.config(fg ="green", text="Success ")
         else:
             deposit_notif.config(fg ="red", text="You can not deposit less than 0 or coins ")
+            return
     else:
         deposit_notif.config(fg ="red", text="Invalid input")
     # print(dp)
     # print(balance+deposit_amount)
          
+
+def withdraw_func():
+    print("Withdraw function success button")
+    global updated
+    withdraw_amount = w_amount.get()
+    print(withdraw_amount)
+    print("add deposits")
+    deposit_file = open(login_name+"_balance_update.txt", "r")
+    dp = deposit_file.readlines()
+    result_list = [word.split('R', 1)[-1] for word in dp if 'R' in word]
+
+    bal = result_list[0]
+    bal_fl =float(bal)
+    withdraw_amount = withdraw_amount.replace(" ","").strip()
+    print(withdraw_amount)
+    if withdraw_amount.replace('.','',1).isdigit():
+        withdraw_amount = float(withdraw_amount.strip())
+        if  0 < withdraw_amount < bal_fl: 
+            if withdraw_amount >0 and withdraw_amount%10 == 0:
+                bal_fl -= withdraw_amount
+                updated = f"Balance = R{bal_fl}"
+                print(updated)
+                #Lets open the file to update the balance
+                balance_file = open(login_name+"_balance_update.txt", "r")
+                bf = balance_file.readlines()
+                print("before")
+                print(bf)
+                #Deleting infor
+                balance_file_update = open(login_name+"_balance_update.txt", "w")
+                balance_file_update.write(updated)
+                
+                print(updated)
+                balance_update_update.config(text=updated)
+                #test
+                # bfu = open(login_name+"_balance_update.txt", "r")
+                # bfu_list=bfu.read()
+                # print("After")
+                # print(bfu_list)
+                
+                deposit_notif.config(fg ="green", text="Success ")
+                return
+            else:
+                deposit_notif.config(fg ="red", text="You can not deposit less than 0 or coins ")
+                return
+        else:
+            deposit_notif.config(fg="red", text="Invalid Input")
+            return
+    else:
+        deposit_notif.config(fg ="red", text="Invalid input")
+        return
+    # print(dp)
+    # print(balance+deposit_amount)
+    
+    
+    
     
 def deposits():
     global d_amount
@@ -64,7 +122,7 @@ def deposits():
     Label(deposits, text=f"Hi, {login_name}, lets deposit", font=("calibri",12)).grid(row=0,sticky=N,pady=10)
     
     Entry(deposits,textvariable=d_amount).grid(row=2,padx=5,pady=15)
-    Button(deposits, text="Login", command=add_deposit, font=("calibri",12), width=16).grid(row= 3, sticky=W, pady = 5)
+    Button(deposits, text="Deposit", command=add_deposit, font=("calibri",12), width=16).grid(row= 3, sticky=W, pady = 5)
     
     deposit_notif = Label(deposits, font=("calibri",12))
     deposit_notif.grid(row=4,sticky=N,pady=10)
@@ -73,6 +131,21 @@ def deposits():
 
 def withdrawals():
     print("Withdraw")
+    global w_amount
+    global withdraw_notif
+
+    w_amount = StringVar()
+    withdraw = Toplevel(root)
+    withdraw.title(f"Deposits")
+    
+    
+    Label(withdraw, text=f"Hi, {login_name}, lets withdraw", font=("calibri",12)).grid(row=0,sticky=N,pady=10)
+    
+    Entry(withdraw,textvariable=w_amount).grid(row=2,padx=5,pady=15)
+    Button(withdraw, text="Withdraw", command=withdraw_func, font=("calibri",12), width=16).grid(row= 3, sticky=W, pady = 5)
+    
+    withdraw_notif = Label(withdraw, font=("calibri",12))
+    withdraw_notif.grid(row=4,sticky=N,pady=10)
 
 def transaction():
     print("Transaction log")
@@ -164,6 +237,7 @@ def register():
     
 def login_function():
     global login_name
+    global balance_update_update
     all_accounts = os.listdir()
     print(all_accounts)
     
@@ -192,21 +266,31 @@ def login_function():
                 account_dashboard = Toplevel(root)
                 account_dashboard.title("Dashboard")
                 
+                #read the user data balance to display on the gui
+                user_file = open(login_name+"_balance_update.txt", "r+")
+                current_balance = user_file.readlines()
+                the_curent_bal = current_balance[0]
+                print(the_curent_bal)
+                
+                
+                
                 #Labels
                 print(login_name)
                 Label(account_dashboard, text="Account dashboard", font=("calibri",15)).grid(row=0,sticky=N,padx=10)
-                Label(account_dashboard, text = "Welcome", font=("calibri",12)).grid(row=1,sticky=N,padx=10)
+                balance_update_update = Label(account_dashboard, text =the_curent_bal , font=("calibri",12))
+                balance_update_update.grid(row=1,sticky=N,padx=10)
+                Label(account_dashboard, text = "Welcome", font=("calibri",12)).grid(row=2,sticky=N,padx=10)
                 
                 #Buttons
-                Button(account_dashboard,text="Personal details", font=("calibri",12),width=30, command= personal_details).grid(row=2,sticky=N,padx=10)
-                Button(account_dashboard,text="Deposit", font=("calibri",12),width=30,command=deposits).grid(row=3,sticky=N,padx=10)
-                Button(account_dashboard,text="Withdraw" ,font=("calibri",12),width=30,command=withdrawals).grid(row=4,sticky=N,padx=10)
-                Button(account_dashboard,text="Transaction log" ,font=("calibri",12),width=30,command=transaction).grid(row=5,sticky=N,padx=10)
-                Button(account_dashboard,text="Investments" ,font=("calibri",12),width=30,command=investments).grid(row=6,sticky=N,padx=10)
-                Button(account_dashboard,text="Home Loan" ,font=("calibri",12),width=30,command=bond).grid(row=7,sticky=N,padx=10)
+                Button(account_dashboard,text="Personal details", font=("calibri",12),width=30, command= personal_details).grid(row=3,sticky=N,padx=10)
+                Button(account_dashboard,text="Deposit", font=("calibri",12),width=30,command=deposits).grid(row=4,sticky=N,padx=10)
+                Button(account_dashboard,text="Withdraw" ,font=("calibri",12),width=30,command=withdrawals).grid(row=5,sticky=N,padx=10)
+                Button(account_dashboard,text="Transaction log" ,font=("calibri",12),width=30,command=transaction).grid(row=6,sticky=N,padx=10)
+                Button(account_dashboard,text="Investments" ,font=("calibri",12),width=30,command=investments).grid(row=7,sticky=N,padx=10)
+                Button(account_dashboard,text="Home Loan" ,font=("calibri",12),width=30,command=bond).grid(row=8,sticky=N,padx=10)
                 
                 #
-                Label(account_dashboard).grid(row=8,sticky=N,pady=10)
+                Label(account_dashboard).grid(row=9,sticky=N,pady=10)
                 return
             else:
                 login_notif.config(fg ="red", text="Wrong password!*")
