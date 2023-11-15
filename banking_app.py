@@ -191,6 +191,25 @@ def transaction():
 
 
 def investments():
+    #variabkes
+    invest_p = StringVar()
+    invest_r = StringVar()
+    investP = StringVar()
+    
+    
+    invest_widget = Toplevel(root)
+    invest_widget.title("Investment Calculator")
+    
+    Label(invest_widget, text="Invesment Dashboard").pack()
+    
+    Label(invest_widget, text="Principal Amount").pack()
+    Entry(invest_widget,text = principal_aount).pack()
+    
+    Label(invest_widget, text="rate (i)").pack()
+    Entry(invest_widget,text = rate).pack()
+    
+    Label(invest_widget, text="time").pack()
+    Entry(invest_widget,text = principal_aount).pack
     print("Investments")
     
 def bond():
@@ -368,7 +387,7 @@ def login_function():
                 
                 #
                 Label(account_dashboard).grid(row=9,sticky=N,pady=10)
-                return
+                return 
             else:
                 login_notif.config(fg ="red", text="Wrong password!*")
             
@@ -526,17 +545,18 @@ def login():
     Label(login_screen, text="Username     ", font=("calibri",12)).grid(row=1,sticky=W)
     Label(login_screen, text="password ", font=("calibri",12)).grid(row=2,sticky=W)
     login_notif = Label(login_screen, font=("calibri",12))
-    login_notif.grid(row=4,sticky=N,pady=10)
+    login_notif.grid(row=3,sticky=N,pady=10)
     
     
     #Entries
     Entry(login_screen,textvariable=temp_login_name).grid(row=1,column=1,padx=5)#Relative padding
     Entry(login_screen,textvariable=temp_login_password, show="*").grid(row=2,column=1)
     
-    Label(login_screen, text=" ", font=("calibri",12)).grid(row=3,sticky=W)
+    Label(login_screen, text=" ", font=("calibri",12)).grid(row=4,sticky=W)
     #register button
-    Button(login_screen, text="Login", command=login_function, font=("calibri",12), width=15).grid(row= 4,column=0 )
-    Button(login_screen, text="forgot-password", command=forgot_password, font=("calibri",12), width=15).grid(row= 4,column=1)
+    Button(login_screen, text="Login", command=login_function, font=("calibri",12), width=15).grid(row= 5,column=0 )
+    Button(login_screen, text="forgot-password", command=forgot_password, font=("calibri",12), width=15).grid(row= 5,column=1)
+    Label(login_screen, text=" ", font=("calibri",12)).grid(row=6,sticky=W)
     
     
 
