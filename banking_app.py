@@ -37,20 +37,15 @@ def add_deposit():
             
             print(updated)
             balance_update_update.config(text=updated)
-            #test
-            # bfu = open(login_name+"_balance_update.txt", "r")
-            # bfu_list=bfu.read()
-            # print("After")
-            # print(bfu_list)
-            
-            
             
             deposit_notif.config(fg ="green", text="Success ")
+            
         else:
             deposit_notif.config(fg ="red", text="You can not deposit less than 0 or coins ")
             return
     else:
         deposit_notif.config(fg ="red", text="Invalid input")
+        return
     # print(dp)
     # print(balance+deposit_amount)
          
@@ -72,7 +67,7 @@ def withdraw_func():
     if withdraw_amount.replace('.','',1).isdigit():
         withdraw_amount = float(withdraw_amount.strip())
         if  0 < withdraw_amount < bal_fl: 
-            if withdraw_amount >0 and withdraw_amount%10 == 0:
+            if withdraw_amount%10 == 0:
                 bal_fl -= withdraw_amount
                 updated = f"Balance = R{bal_fl}"
                 print(updated)
@@ -93,16 +88,17 @@ def withdraw_func():
                 # print("After")
                 # print(bfu_list)
                 
-                deposit_notif.config(fg ="green", text="Success ")
-                return
+                withdraw_notif.config(fg ="green", text="Success ")
+                withdraw.destroy()
+                
             else:
-                deposit_notif.config(fg ="red", text="You can not deposit less than 0 or coins ")
+                withdraw_notif.config(fg ="red", text="You can not deposit coins ")
                 return
         else:
-            deposit_notif.config(fg="red", text="Invalid Input")
+            withdraw_notif.config(fg="red", text="Invalid Input")
             return
     else:
-        deposit_notif.config(fg ="red", text="Invalid input")
+        withdraw_notif.config(fg ="red", text="Invalid input")
         return
     # print(dp)
     # print(balance+deposit_amount)
@@ -133,6 +129,7 @@ def withdrawals():
     print("Withdraw")
     global w_amount
     global withdraw_notif
+    global withdraw
 
     w_amount = StringVar()
     withdraw = Toplevel(root)
