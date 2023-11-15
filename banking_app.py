@@ -7,6 +7,85 @@ root = Tk()
 root.title("Banking app")
 
 #Functions
+def add_deposit():
+    global updated
+    deposit_amount = d_amount.get()
+    print(deposit_amount)
+    print("add deposits")
+    deposit_file = open(login_name+"_balance_update.txt", "r")
+    dp = deposit_file.readlines()
+    result_list = [word.split('R', 1)[-1] for word in dp if 'R' in word]
+
+    bal = result_list[0]
+    bal_fl =float(bal)
+    deposit_amount = deposit_amount.replace(" ","").strip()
+    print(deposit_amount)
+    if deposit_amount.replace('.','',1).isdigit():
+        deposit_amount = float(deposit_amount.replace('.','',1).strip())
+        if deposit_amount >0 and deposit_amount%10 == 0:
+            bal_fl += deposit_amount
+            updated = f"Balance = R{bal_fl}"
+            print(updated)
+            #Lets open the file to update the balance
+            balance_file = open(login_name+"_balance_update.txt", "r")
+            bf = balance_file.readlines()
+            print("before")
+            print(bf)
+            #Deleting infor
+            balance_file_update = open(login_name+"_balance_update.txt", "w")
+            balance_file_update.write(updated)
+            
+            #test
+            bfu = open(login_name+"_balance_update.txt", "r")
+            bfu_list=bfu.read()
+            print("After")
+            print(bfu_list)
+            
+            
+            
+            deposit_notif.config(fg ="green", text="Success ")
+        else:
+            deposit_notif.config(fg ="red", text="You can not deposit less than 0 or coins ")
+    else:
+        deposit_notif.config(fg ="red", text="Invalid input")
+    # print(dp)
+    # print(balance+deposit_amount)
+         
+    
+def deposits():
+    global d_amount
+    global deposit_notif
+
+    d_amount = StringVar()
+    deposits = Toplevel(root)
+    deposits.title(f"Deposits")
+    
+    
+    Label(deposits, text=f"Hi, {login_name}, lets deposit", font=("calibri",12)).grid(row=0,sticky=N,pady=10)
+    
+    Entry(deposits,textvariable=d_amount).grid(row=2,padx=5,pady=15)
+    Button(deposits, text="Login", command=add_deposit, font=("calibri",12), width=16).grid(row= 3, sticky=W, pady = 5)
+    
+    deposit_notif = Label(deposits, font=("calibri",12))
+    deposit_notif.grid(row=4,sticky=N,pady=10)
+    
+    
+
+def withdrawals():
+    print("Withdraw")
+
+def transaction():
+    print("Transaction log")
+
+def investments():
+    print("Investments")
+    
+def bond():
+    print("Home loan")
+
+
+
+
 def finish_reg():
     global amount
     amount = int(0)
@@ -114,8 +193,9 @@ def login_function():
                 account_dashboard.title("Dashboard")
                 
                 #Labels
+                print(login_name)
                 Label(account_dashboard, text="Account dashboard", font=("calibri",15)).grid(row=0,sticky=N,padx=10)
-                Label(account_dashboard, text="Welcome\n"+login_name, font=("calibri",12)).grid(row=1,sticky=N,padx=10)
+                Label(account_dashboard, text = "Welcome", font=("calibri",12)).grid(row=1,sticky=N,padx=10)
                 
                 #Buttons
                 Button(account_dashboard,text="Personal details", font=("calibri",12),width=30, command= personal_details).grid(row=2,sticky=N,padx=10)
@@ -126,7 +206,7 @@ def login_function():
                 Button(account_dashboard,text="Home Loan" ,font=("calibri",12),width=30,command=bond).grid(row=7,sticky=N,padx=10)
                 
                 #
-                Label(account_dashboard).grid(row=5,sticky=N,pady=10)
+                Label(account_dashboard).grid(row=8,sticky=N,pady=10)
                 return
             else:
                 login_notif.config(fg ="red", text="Wrong password!*")
@@ -146,79 +226,7 @@ def personal_details():
     Label(Personal, text=f"Hi, {login_name}, Below is your details", font=("calibri",12)).grid(row=0,sticky=N,pady=10)
     Label(Personal, text=pd, font=("calibri",10)).grid(row=1,sticky=N,pady=10)
 
-    
-def deposits():
-    global d_amount
-    global deposit_notif
-    d_amount = StringVar()
-    deposits = Toplevel(root)
-    deposits.title(f"Deposits")
-    
-    
-    Label(deposits, text=f"Hi, {login_name}, lets deposit", font=("calibri",12)).grid(row=0,sticky=N,pady=10)
-    Label(deposits, text=f"Balance = R100 000 000.00", font=("calibri",11)).grid(row=1,sticky=N,pady=10)
-    Label(deposits, text="Deposits sectction", font=("calibri",8)).grid(row=2,sticky=N,pady=10)
-    
-    
-    Entry(deposits,textvariable=d_amount).grid(row=3,padx=5,pady=15)
-    Button(deposits, text="Login", command=add_deposit, font=("calibri",12), width=16).grid(row= 4, sticky=W, pady = 5)
-    
-    deposit_notif = Label(deposits, font=("calibri",12))
-    deposit_notif.grid(row=5,sticky=N,pady=10)
-    
-    
-def add_deposit():
-    deposit_amount = d_amount.get()
-    print(deposit_amount)
-    print("add deposits")
-    deposit_file = open(login_name+"_balance_update.txt", "r")
-    dp = deposit_file.readlines()
-    result_list = [word.split('R', 1)[-1] for word in dp if 'R' in word]
 
-    bal = result_list[0]
-    bal_fl =float(bal)
-    deposit_amount = deposit_amount.replace(" ","").strip()
-    print(deposit_amount)
-    if deposit_amount.replace('.','',1).isdigit():
-        deposit_amount = float(deposit_amount.replace('.','',1).strip())
-        if deposit_amount >0 and deposit_amount%10 == 0:
-            bal_fl += deposit_amount
-            updated = f"Balance = R{bal_fl}"
-            print(updated)
-            #Lets open the file to update the balance
-            balance_file = open(login_name+"_balance_update.txt", "r")
-            bf = balance_file.readlines()
-            print("before")
-            print(bf)
-            #Deleting infor
-            balance_file_update = open(login_name+"_balance_update.txt", "w")
-            balance_file_update.write(updated)
-            
-            #test
-            bfu = open(login_name+"_balance_update.txt", "r")
-            bfu_list=bfu.read()
-            print("After")
-            print(bfu_list)
-            
-            deposit_notif.config(fg ="green", text="Success ")
-        else:
-            deposit_notif.config(fg ="red", text="You can not deposit less than 0 or coins ")
-    else:
-        deposit_notif.config(fg ="red", text="Invalid input")
-    # print(dp)
-    # print(balance+deposit_amount)
-        
-def withdrawals():
-    print("Withdraw")
-
-def transaction():
-    print("Transaction log")
-
-def investments():
-    print("Investments")
-    
-def bond():
-    print("Home loan")
     
 def login():
     #Vars
