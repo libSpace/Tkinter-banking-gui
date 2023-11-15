@@ -125,8 +125,9 @@ def deposits():
     
     
     Label(deposits_tk, text=f"Hi, {login_name}, lets deposit", font=("calibri",12)).grid(row=0,sticky=N,pady=10)
+    Label(deposits_tk, text="R", font=("calibri",12)).grid(row=0,column=0,sticky=N,pady=10)
     
-    Entry(deposits_tk,textvariable=d_amount).grid(row=2,padx=5,pady=15)
+    Entry(deposits_tk,textvariable=d_amount).grid(row=2,column=1,padx=5,pady=15)
     Button(deposits_tk, text="Deposit", command=add_deposit, font=("calibri",12), width=16).grid(row= 3, sticky=W, pady = 5)
     
     deposit_notif = Label(deposits_tk, font=("calibri",12))
@@ -145,8 +146,9 @@ def withdrawals():
     
     
     Label(withdraw, text=f"Hi, {login_name}, lets withdraw", font=("calibri",12)).grid(row=0,sticky=N,pady=10)
+    Label(withdraw, text="R", font=("calibri",12)).grid(row=2,column=0,sticky=N,pady=10)
     
-    Entry(withdraw,textvariable=w_amount).grid(row=2,padx=5,pady=15)
+    Entry(withdraw,textvariable=w_amount).grid(row=2,column=1,padx=5,pady=15)
     Button(withdraw, text="Withdraw", command=withdraw_func, font=("calibri",12), width=16).grid(row= 3, sticky=W, pady = 5)
     
     withdraw_notif = Label(withdraw, font=("calibri",12))
@@ -161,14 +163,6 @@ def transaction():
     transact = Toplevel(root)
     transact.title(f"The Mint")
     
-     # Access the root window from the Toplevel window
-    root_of_toplevel = transact.winfo_toplevel()
-    
-    # Set the geometry of the root window
-    root_of_toplevel.geometry("300x320")
-
-    
-    
     user_file = open(login_name+"_balance_update.txt", "r+")
     current_balance = user_file.readlines()
     the_curent_bal = current_balance[0]
@@ -179,7 +173,7 @@ def transaction():
     Label(transact, text=f"Hi, {login_name}\nTransactional log", font=("calibri",12)).grid(row=0,sticky=N,pady=10)
     balance_update_update = Label(transact, text=the_curent_bal, font=("calibri",10))
     balance_update_update.grid(row=1,sticky=N,pady=10)
-    Label(transact, text=t_l_f, font=("calibri",10)).grid(row=2,sticky=N,pady=10)
+    Label(transact, text=t_l_f, font=("calibri",10)).grid(row=2,sticky=W,pady=10)
 
 
 def investments():
@@ -232,7 +226,7 @@ def finish_reg():
             new_file_acc = open(f"{name}","w")
             statement = open(f"{name}_balance_update.txt","w")
             new_file.write(f"Name       : {name}\n")
-            new_file.write(f"Password   : {password} \n")
+            new_file.write(f"Password   : {password}\n")
             new_file_acc.write(password)
             statement.write(f"Balance = R{amount}")
             new_file.write(f"Age        : {id_number}\n")
@@ -242,8 +236,7 @@ def finish_reg():
             # new_file_acc.close()
             
             log = open(name+"log","w")
-            log.write(f"{name}'s Transactional log\n")
-          
+            
        
             
             # notif.config(fg ="green", text="Account has been created succesfully")

@@ -1,0 +1,4 @@
+Name       : asekhona
+Password   : 1122qw
+Age        : 20101998
+Gender     : f
