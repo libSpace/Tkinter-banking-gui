@@ -1,0 +1,4 @@
+Name       : lerato
+Password   : 12345 
+Age        : 14101999
+Gender     : female
