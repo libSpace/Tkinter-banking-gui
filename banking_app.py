@@ -358,6 +358,61 @@ def personal_details():
     Label(Personal, text=f"Hi, {login_name}, Below is your details", font=("calibri",12)).grid(row=0,sticky=N,pady=10)
     Label(Personal, text=pd, font=("calibri",10)).grid(row=1,sticky=N,pady=10)
 
+def forgot_password():
+    global f_username
+    global f_id_num
+    global for_notif
+    f_username = StringVar()
+    f_id_num = StringVar()
+    
+    forgot = Toplevel(root)
+    forgot.title("Password reset")
+    
+    #Labeels
+    Label(forgot, text="Login to your account", font=("calibri",12)).pack()
+    Label(forgot, text="Username     :", font=("calibri",12)).pack()
+    Entry(forgot,textvariable=f_username).pack()
+    Label(forgot, text="id_number    :", font=("calibri",12)).pack()
+    Entry(forgot,textvariable=f_id_num).pack()
+    for_notif = Label(forgot, font=("calibri",12))
+    for_notif.pack() 
+     
+    Button(forgot, text="forgot-password", command=submit, font=("calibri",12), width=15).pack()
+    
+    print("forgot_password")
+    
+
+
+def submit():
+    forgot_username = f_username.get()
+    forgot_id_number = f_id_num.get()
+    #Validated
+    
+    forgot_username = forgot_username.replace(" ", "").strip()
+    forgot_id_number = forgot_id_number.replace(" ", "").strip()
+    if forgot_username == "" or forgot_id_number == "":
+        print("All inout fields are required ")
+        for_notif.config(fg ="red", text="All input fields are required!")
+        return
+    print(forgot_username)  
+        
+        
+        
+        
+    pattern = re.compile(r'^(0[1-9]|[1-2][0-9]|3[0-1])(0[1-9]|1[0-2])(1920|19[2-9][0-9]|20[0-1][0-9]|202[0-3])$')
+    if pattern.match(forgot_id_number):
+        print("Valid id format.")
+        for_notif.config(fg ="green", text="Success")
+        print(forgot_id_number)
+    
+    else:
+        print("Invalid id format.")
+        for_notif.config(fg ="red", text="Invalid Id format!\n(ddmmyyyy)")
+        return
+    
+   
+   
+    print("Submit")
 
     
 def login():
@@ -383,8 +438,10 @@ def login():
     Entry(login_screen,textvariable=temp_login_name).grid(row=1,column=1,padx=5)#Relative padding
     Entry(login_screen,textvariable=temp_login_password, show="*").grid(row=2,column=1)
     
+    Label(login_screen, text=" ", font=("calibri",12)).grid(row=3,sticky=W)
     #register button
-    Button(login_screen, text="Login", command=login_function, font=("calibri",12), width=16).grid(row= 3, sticky=W, pady = 5)
+    Button(login_screen, text="Login", command=login_function, font=("calibri",12), width=15).grid(row= 4,column=0 )
+    Button(login_screen, text="forgot-password", command=forgot_password, font=("calibri",12), width=15).grid(row= 4,column=1)
     
     
 
