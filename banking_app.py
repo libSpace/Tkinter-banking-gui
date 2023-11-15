@@ -1,6 +1,7 @@
 from tkinter import *
 import os
 from PIL import ImageTk,Image
+import re
 
 #Main screen
 root = Tk()
@@ -42,8 +43,9 @@ def add_deposit():
             
             print(updated)
             balance_update_update.config(text=updated)
-            
+
             deposit_notif.config(fg ="green", text="Success ")
+            deposits_tk.destroy()
             
         else:
             deposit_notif.config(fg ="red", text="You can not deposit less than 0 or coins ")
@@ -93,11 +95,6 @@ def withdraw_func():
                 
                 print(updated)
                 balance_update_update.config(text=updated)
-                #test
-                # bfu = open(login_name+"_balance_update.txt", "r")
-                # bfu_list=bfu.read()
-                # print("After")
-                # print(bfu_list)
                 
                 withdraw_notif.config(fg ="green", text="Success ")
                 withdraw.destroy()
@@ -120,18 +117,19 @@ def withdraw_func():
 def deposits():
     global d_amount
     global deposit_notif
+    global deposits_tk
 
     d_amount = StringVar()
-    deposits = Toplevel(root)
-    deposits.title(f"Deposits")
+    deposits_tk = Toplevel(root)
+    deposits_tk.title(f"Deposits")
     
     
-    Label(deposits, text=f"Hi, {login_name}, lets deposit", font=("calibri",12)).grid(row=0,sticky=N,pady=10)
+    Label(deposits_tk, text=f"Hi, {login_name}, lets deposit", font=("calibri",12)).grid(row=0,sticky=N,pady=10)
     
-    Entry(deposits,textvariable=d_amount).grid(row=2,padx=5,pady=15)
-    Button(deposits, text="Deposit", command=add_deposit, font=("calibri",12), width=16).grid(row= 3, sticky=W, pady = 5)
+    Entry(deposits_tk,textvariable=d_amount).grid(row=2,padx=5,pady=15)
+    Button(deposits_tk, text="Deposit", command=add_deposit, font=("calibri",12), width=16).grid(row= 3, sticky=W, pady = 5)
     
-    deposit_notif = Label(deposits, font=("calibri",12))
+    deposit_notif = Label(deposits_tk, font=("calibri",12))
     deposit_notif.grid(row=4,sticky=N,pady=10)
     
 
@@ -155,7 +153,34 @@ def withdrawals():
     withdraw_notif.grid(row=4,sticky=N,pady=10)
 
 def transaction():
+    global balance_update_transact
     print("Transaction log")
+    trans_log_file = open(f"{login_name}log", "r")
+    t_l_f = trans_log_file.read()
+    print(t_l_f) 
+    transact = Toplevel(root)
+    transact.title(f"The Mint")
+    
+     # Access the root window from the Toplevel window
+    root_of_toplevel = transact.winfo_toplevel()
+    
+    # Set the geometry of the root window
+    root_of_toplevel.geometry("300x320")
+
+    
+    
+    user_file = open(login_name+"_balance_update.txt", "r+")
+    current_balance = user_file.readlines()
+    the_curent_bal = current_balance[0]
+    print(the_curent_bal)
+    
+    
+    
+    Label(transact, text=f"Hi, {login_name}\nTransactional log", font=("calibri",12)).grid(row=0,sticky=N,pady=10)
+    balance_update_update = Label(transact, text=the_curent_bal, font=("calibri",10))
+    balance_update_update.grid(row=1,sticky=N,pady=10)
+    Label(transact, text=t_l_f, font=("calibri",10)).grid(row=2,sticky=N,pady=10)
+
 
 def investments():
     print("Investments")
@@ -168,18 +193,36 @@ def bond():
 
 def finish_reg():
     global amount
-    amount = int(0)
-    name = temp_name.get()#We use get() method to get an store
-    id_number = temp_id.get()
-    gender = temp_gender.get()
-    password = temp_password.get()
+    amount      = int(0)
+    name        = temp_name.get()#We use get() method to get an store
+    id_number   = temp_id.get()
+    gender      = temp_gender.get()
+    password    = temp_password.get()
     all_accounts = os.listdir()
     print(all_accounts)
+    name = name.replace(" ","").strip()
+    id_number = id_number.replace(" ","").strip()
+    password = password.replace(" ","").strip()
     
     if name== "" or id_number == "" or gender == "" or password =="":
         notif.config(fg ="red", text="All fields are required*")
         return
 
+    pattern = re.compile(r'^(0[1-9]|[1-2][0-9]|3[0-1])(0[1-9]|1[0-2])(1920|19[2-9][0-9]|20[0-1][0-9]|202[0-3])$')
+    if pattern.match(id_number):
+        print("Valid date format.")
+    
+    else:
+        print("Invalid date format.")
+        return
+    
+    gender = gender.replace(" ","").strip()
+    if gender.lower() != 'male' and gender.lower() != 'female' and gender.lower() != 'm' and gender.lower() != 'f':
+        print("Gender must be either (male, female, m, f)")
+        return
+    else:
+        print("gender success")
+        
     for name_check in all_accounts:
         if name == name_check:
             notif.config(fg ="red", text="Account already exists")
@@ -200,11 +243,10 @@ def finish_reg():
             
             log = open(name+"log","w")
             log.write(f"{name}'s Transactional log\n")
-            print(log)
-            log.close()
+          
        
             
-            notif.config(fg ="green", text="Account has been created succesfully")
+            # notif.config(fg ="green", text="Account has been created succesfully")
             register_screen.destroy()
         
     
