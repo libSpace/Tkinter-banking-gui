@@ -24,6 +24,11 @@ def add_deposit():
         deposit_amount = float(deposit_amount.strip())
         if deposit_amount >0 and deposit_amount%10 == 0:
             bal_fl += deposit_amount
+            
+            #Update the transactional log
+            update_trans_log = open(login_name+"log",'a')
+            update_trans_log.writelines(f"+R{deposit_amount}\n")
+            
             updated = f"Balance = R{bal_fl}"
             print(updated)
             #Lets open the file to update the balance
@@ -69,6 +74,12 @@ def withdraw_func():
         if  0 < withdraw_amount < bal_fl: 
             if withdraw_amount%10 == 0:
                 bal_fl -= withdraw_amount
+                #Update the transactional log
+                update_trans_log = open(login_name+"log",'a')
+                update_trans_log.writelines(f"\n-R{withdraw_amount}\n")
+                
+                
+                
                 updated = f"Balance = R{bal_fl}"
                 print(updated)
                 #Lets open the file to update the balance
@@ -122,7 +133,6 @@ def deposits():
     
     deposit_notif = Label(deposits, font=("calibri",12))
     deposit_notif.grid(row=4,sticky=N,pady=10)
-    
     
 
 def withdrawals():
@@ -184,9 +194,15 @@ def finish_reg():
             statement.write(f"Balance = R{amount}")
             new_file.write(f"Age        : {id_number}\n")
             new_file.write(f"Gender     : {gender}\n")
-            new_file.write(f"Balance    : R0")
+            # new_file.write(f"Balance    : R0")
             new_file.close()
             # new_file_acc.close()
+            
+            log = open(name+"log","w")
+            log.write(f"{name}'s Transactional log\n")
+            print(log)
+            log.close()
+       
             
             notif.config(fg ="green", text="Account has been created succesfully")
             register_screen.destroy()

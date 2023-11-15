@@ -1,5 +1,0 @@
-Name       : Likhaya
-Password   : 1122qw 
-Age        : 000000000000
-Gender     : female
-Balance    : R0

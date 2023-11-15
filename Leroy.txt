@@ -1,5 +1,0 @@
-Name       : Leroy
-Password   : 1122qw 
-Age        : 2310157254088
-Gender     : male
-Balance    : R0
