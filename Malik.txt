@@ -2,3 +2,4 @@ Name       : Malik
 Password   : 1122qw 
 Age        : 28071999
 Gender     : f
+new password : 12qwaszx

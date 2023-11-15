@@ -2,12 +2,26 @@ from tkinter import *
 import os
 from PIL import ImageTk,Image
 import re
+import random
+import secrets
+import string
 
 #Main screen
 root = Tk()
 root.title("Banking app")
 
 #Functions
+
+
+
+def generate_random_password():
+    global password
+    characters = string.ascii_letters + string.digits
+    password = ''.join(secrets.choice(characters) for _ in range(5))
+    notif.config(fg="black", text=password)
+    
+
+
 def add_deposit():
     global updated
     deposit_amount = d_amount.get()
@@ -186,6 +200,16 @@ def bond():
 
 
 def finish_reg():
+    
+
+    # Generate a random 7-digit number
+    random_middle_part = str(random.randint(1000000, 9999999))
+
+    # Concatenate the parts to form a 9-digit number
+    random_9_digit_number = "9" + random_middle_part + "2"
+
+    print(random_9_digit_number)
+    
     global amount
     amount      = int(0)
     name        = temp_name.get()#We use get() method to get an store
@@ -225,12 +249,14 @@ def finish_reg():
             new_file = open(f"{name}.txt","w")
             new_file_acc = open(f"{name}","w")
             statement = open(f"{name}_balance_update.txt","w")
+            new_file.write(f"Account no : {random_9_digit_number}\n")
             new_file.write(f"Name       : {name}\n")
             new_file.write(f"Password   : {password}\n")
             new_file_acc.write(password)
             statement.write(f"Balance = R{amount}")
             new_file.write(f"Age        : {id_number}\n")
             new_file.write(f"Gender     : {gender}\n")
+            
             # new_file.write(f"Balance    : R0")
             new_file.close()
             # new_file_acc.close()
@@ -241,8 +267,7 @@ def finish_reg():
             
             # notif.config(fg ="green", text="Account has been created succesfully")
             register_screen.destroy()
-        
-    
+            
 def register():
     #register vars
     
@@ -279,13 +304,17 @@ def register():
     Entry(register_screen,textvariable=temp_id).grid(row=2,column=0)
     Entry(register_screen,textvariable=temp_gender).grid(row=3,column=0)
     Entry(register_screen,textvariable=temp_password, show="*").grid(row=4,column=0)
+    notif = Label(register_screen, font=("calibri",12))
+    notif.grid(row=5,sticky=N,pady=10)
     
     #register button
-    Button(register_screen, text="Register", command=finish_reg, font=("calibri",12)).grid(row= 5, sticky=N, pady = 10)
+    Button(register_screen, text="Register"         , command=finish_reg, font=("calibri",12)).grid(row= 6, sticky=N, pady = 10)
+    Button(register_screen, text="generate password", command=generate_random_password, font=("calibri",12)).grid(row= 7, sticky=N, pady = 10)
     
 def login_function():
     global login_name
     global balance_update_update
+    
     all_accounts = os.listdir()
     print(all_accounts)
     
@@ -362,18 +391,31 @@ def forgot_password():
     global f_username
     global f_id_num
     global for_notif
+    global f_new_password
+    global f1_new_password
     f_username = StringVar()
-    f_id_num = StringVar()
+    f_id_num = StringVar()  
+    f_new_password = StringVar()
+    f1_new_password = StringVar()
     
     forgot = Toplevel(root)
     forgot.title("Password reset")
     
     #Labeels
     Label(forgot, text="Login to your account", font=("calibri",12)).pack()
-    Label(forgot, text="Username     :", font=("calibri",12)).pack()
+    
+    Label(forgot, text="Username:", font=("calibri",12)).pack()
     Entry(forgot,textvariable=f_username).pack()
-    Label(forgot, text="id_number    :", font=("calibri",12)).pack()
+    
+    Label(forgot, text="id_number:", font=("calibri",12)).pack()
     Entry(forgot,textvariable=f_id_num).pack()
+    
+    Label(forgot, text="New PIN :", font=("calibri",12)).pack()
+    Entry(forgot,textvariable=f_new_password).pack()
+    
+    Label(forgot, text="Confirm PIN:", font=("calibri",12)).pack()
+    Entry(forgot,textvariable=f1_new_password).pack()
+    
     for_notif = Label(forgot, font=("calibri",12))
     for_notif.pack() 
      
@@ -386,33 +428,86 @@ def forgot_password():
 def submit():
     forgot_username = f_username.get()
     forgot_id_number = f_id_num.get()
+    new_password    = f_new_password.get()
+    new_password1   = f1_new_password.get() 
+    
+    
+    forgot_all_accounts = os.listdir()
     #Validated
     
     forgot_username = forgot_username.replace(" ", "").strip()
     forgot_id_number = forgot_id_number.replace(" ", "").strip()
-    if forgot_username == "" or forgot_id_number == "":
+    new_password =new_password.replace(" ", "").strip()
+    new_password1 =new_password1.replace(" ", "").strip()
+    
+    print(forgot_username)  
+        #############Test the data base
+    
+    ##########################
+    
+    pattern = re.compile(r'^(0[1-9]|[1-2][0-9]|3[0-1])(0[1-9]|1[0-2])(1920|19[2-9][0-9]|20[0-1][0-9]|202[0-3])$')
+    print(forgot_all_accounts)
+    if forgot_username == "" or forgot_id_number == "" or f_new_password == "" or f1_new_password=="":
         print("All inout fields are required ")
         for_notif.config(fg ="red", text="All input fields are required!")
-        return
-    print(forgot_username)  
-        
-        
-        
-        
-    pattern = re.compile(r'^(0[1-9]|[1-2][0-9]|3[0-1])(0[1-9]|1[0-2])(1920|19[2-9][0-9]|20[0-1][0-9]|202[0-3])$')
-    if pattern.match(forgot_id_number):
-        print("Valid id format.")
-        for_notif.config(fg ="green", text="Success")
-        print(forgot_id_number)
     
-    else:
-        print("Invalid id format.")
-        for_notif.config(fg ="red", text="Invalid Id format!\n(ddmmyyyy)")
-        return
+    else:   
+        # Initialize variables
+        found = False
+        index = 0
+
+        # Use a while loop to iterate through the list
+        while index < len(forgot_all_accounts):
+            if forgot_all_accounts[index] == forgot_username:
+                found = True
+                break
+            index += 1
+
+        # Check the result
+        if found:
+            print(f"{forgot_username} exists in the list")
+            if pattern.match(forgot_id_number):
+                forgot = open(f"{forgot_username}.txt", "r")
+                forgot_files = forgot.readlines()
+                id_after_colon = forgot_files[2].split(':')[1].strip()
+                if forgot_id_number == id_after_colon:
+                    if new_password == new_password1:
+                        app = open(forgot_username,'w')
+                        app.write(new_password)
+                        app.close()
+                        update_new_pass = open(f"{forgot_username}.txt","a")
+                        update_new_pass.writelines(f"new password : {new_password}")
+                        # forgot.destroy()
+                        return
+                    else:
+                        for_notif.config(fg="red", text="Passwords does not match")
+                        return
+                else:
+                    for_notif.config(fg="red", text="Wrong ID number")  
+                    return    
+            else:
+                for_notif.config(fg="red", text="Invalid Id number")  
+                return     
+            # for_notif.config(fg="Green", text="Account exist")
+        else:
+            print(f"{forgot_username} does not exist in the list")
+            for_notif.config(fg="red", text="Account does not exist")
+        
+    # if accExist == True and         
     
-   
-   
-    print("Submit")
+    # if pattern.match(forgot_id_number):
+    #     if forgot_id_number == id_after_colon:
+    #         if new_password == new_password1:
+                
+    #             for_notif.config(fg="green",text="Success")
+    #             return
+    #         else:
+    #             login_notif.config(fg='red',text="new Password does not match")
+    #     else:
+    #         login_notif.config(fg='red',text="Wrong Id number")
+    # else:
+    #     login_notif.config(fg='red',text="Invalid Id number")
+
 
     
 def login():
