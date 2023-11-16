@@ -200,25 +200,109 @@ def comp_years():
     principal = principal.replace(" ","").strip()
     rate = rate.replace(" ","").strip()
     time = time.replace(" ","").strip()
+    
     print(principal)
     print(rate)
     print(time)
-    
-    if principal.replace('.','',1).isdigit() and rate.replace('.','',1).isdigit and time.isdigit():
-        if principal > 0 and rate > 0 and time >0:
-            print('we still good')
-        else:
-            inve_notif.config(fg="red", text="Positive values")
+    if principal.strip() =="" and rate.strip() =='' and time.strip =='':
+        inve_notif.config(fg='red',text='All fields are required')
     else:
-        inve_notif.config(fg="red", text="Invalid input!")
+        if principal.replace('.','',1).isdigit() and rate.replace('.','',1).isdigit and time.isdigit():
+                    
+            time = float(time.replace(".",'',1).strip())
+            rate=float(rate.replace(".",'',1).strip())
+            principal=float(principal.replace(".",'',1).strip())
+            if principal > 0 and rate > 0 and time >0:
+                print('we still good')
+            else:
+                inve_notif.config(fg="red", text="Positive values")
+        else:
+            inve_notif.config(fg="red", text="Invalid input!")
 
 def comp_months():
-    print(principal)    
+    principal = principal.replace(" ","").strip()
+    rate = rate.replace(" ","").strip()
+    time = time.replace(" ","").strip()
+    print(principal)
+    print(rate)
+    print(time)
+    if principal.strip() =="" and rate.strip() =='' and time.strip =='':
+        inve_notif.config(fg='red',text='All fields are required')
+    else:
+        if principal.replace('.','',1).isdigit() and rate.replace('.','',1).isdigit and time.isdigit():
+                    
+            time = float(time.replace(".",'',1).strip())
+            rate=float(rate.replace(".",'',1).strip())
+            principal=float(principal.replace(".",'',1).strip())
+            if principal > 0 and rate > 0 and time >0:
+                print('we still good')
+                inve_notif.config(fg="green", text="We good ")
+            else:
+                inve_notif.config(fg="red", text="Positive values")
+                return
+        else:
+            inve_notif.config(fg="red", text="Invalid input!")
+            return
+
     print("Comp in months")
+    
+    
+    
 def simp_months():
+    principal = principal.replace(" ","").strip()
+    rate = rate.replace(" ","").strip()
+    time = time.replace(" ","").strip()
+    print(principal)
+    print(rate)
+    print(time)
+    if principal =="" and rate =='' and time =='':
+        inve_notif.config(fg='red',text='All fields are required')
+        return
+    else:
+        if principal.replace('.','',1).isdigit() and rate.replace('.','',1).isdigit and time.isdigit():
+                    
+            time = float(time.replace(".",'',1).strip())
+            rate=float(rate.replace(".",'',1).strip())
+            principal=float(principal.replace(".",'',1).strip())
+            if principal > 0 and rate > 0 and time >0:
+                print('we still good')
+                inve_notif.config(fg='green', text="we still good simp months")
+            else:
+                inve_notif.config(fg="red", text="Positive values")
+                return
+        else:
+            inve_notif.config(fg="red", text="Invalid input!")
+            return
+
     print("simp in months")
+    
+    
 def simp_years():
+    principal = principal.replace(" ","").strip()
+    rate = rate.replace(" ","").strip()
+    time = time.replace(" ","").strip()
+    print(principal)
+    print(rate)
+    print(time)
+    if principal =="" and rate =='' and time =='':
+        inve_notif.config(fg='red',text='All fields are required')
+        return
+    else:
+        if principal.replace('.','',1).isdigit() and rate.replace('.','',1).isdigit and time.isdigit():
+            if principal > 0 and rate > 0 and time >0:
+                print('we still good')
+                inve_notif.config(fg='green',text='simp year goo')
+            else:
+                inve_notif.config(fg="red", text="Positive values")
+                return
+        else:
+            inve_notif.config(fg="red", text="Invalid input!")
+            return
+
     print("simp in years")
+    
+    
+    
     
 def investments():
     #Global vars
@@ -247,6 +331,7 @@ def investments():
     Entry(invest_widget,text = invest_t).pack()
     Label(invest_widget, text="").pack()
     inve_notif = Label(invest_widget)
+    inve_notif.pack()
     
     #Buttons
     Button(invest_widget, text="Compound Interest(time in years)"         , command=comp_years, font=("calibri",12),width=30).pack()
