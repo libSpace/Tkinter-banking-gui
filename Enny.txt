@@ -1,5 +1,0 @@
-Account no : 982530982
-Name       : Enny
-Password   : Y%Fxs
-Age        : 28071994
-Gender     : male

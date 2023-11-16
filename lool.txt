@@ -1,4 +1,0 @@
-Name       : lool
-Password   : 1122qw 
-Age        : 28071994
-Gender     : m
