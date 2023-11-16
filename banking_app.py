@@ -94,8 +94,6 @@ def withdraw_func():
                 update_trans_log = open(login_name+"log",'a')
                 update_trans_log.writelines(f"Withdraw: -R{withdraw_amount}\n")
                 
-                
-                
                 updated = f"Balance = R{bal_fl}"
                 print(updated)
                 #Lets open the file to update the balance
@@ -272,9 +270,9 @@ def simp_months():
         else:
             inve_notif.config(fg="red", text="Invalid input!")
             return
-
     print("simp in months")
-    
+def logout():
+    account_dashboard.destroy()
     
 def simp_years():
     principal = principal.replace(" ","").strip()
@@ -333,10 +331,10 @@ def investments():
     inve_notif.pack()
     
     #Buttons
-    Button(invest_widget, text="Compound Interest(time in years)"         , command=comp_years, font=("calibri",12),width=30).pack()
-    Button(invest_widget, text="Compound Interest(time in months)"         , command=comp_months, font=("calibri",12),width=30).pack()
-    Button(invest_widget, text="simple Interest(time in months)"         , command=simp_months, font=("calibri",12),width=30).pack()
-    Button(invest_widget, text="simple interest(time in years)"         , command=simp_years, font=("calibri",12),width=30).pack()
+    Button(invest_widget, text="Compound Interest(time in years)" , command=comp_years, font=("calibri",12),width=30).pack()
+    Button(invest_widget, text="Compound Interest(time in months)", command=comp_months, font=("calibri",12),width=30).pack()
+    Button(invest_widget, text="simple Interest(time in months)" , command=simp_months, font=("calibri",12),width=30).pack()
+    Button(invest_widget, text="simple interest(time in years)", command=simp_years, font=("calibri",12),width=30).pack()
     print("Investments")
     
 def bond():
@@ -400,7 +398,7 @@ def finish_reg():
 
     # Check the result
     if found:
-        print("Malik exists in the list")
+        
         err_notif.config(fg ="red", text="Account already exists")
         return
     else:
@@ -419,34 +417,7 @@ def finish_reg():
         # new_file.write(f"Balance    : R0")
         new_file.close()
         register_screen.destroy()
-    # print(all_accounts)   
-    # for name_check in all_accounts:
-    #     if name == name_check:
-    #         err_notif.config(fg ="red", text="Account already exists")
-    #         # return
-    #     else:
-    #         new_file = open(f"{name}.txt","w")
-    #         new_file_acc = open(f"{name}","w")
-    #         statement = open(f"{name}_balance_update.txt","w")
-    #         new_file.write(f"Account no : {random_9_digit_number}\n")
-    #         new_file.write(f"Name       : {name}\n")
-    #         new_file.write(f"Password   : {password}\n")
-    #         new_file_acc.write(password)
-    #         statement.write(f"Balance = R{amount}")
-    #         new_file.write(f"ID number        : {id_number}\n")
-    #         new_file.write(f"Gender     : {gender}\n")
-            
-    #         # new_file.write(f"Balance    : R0")
-    #         new_file.close()
-    #         # new_file_acc.close()
-            
-    #         log = open(name+"log","w")
-            
-       
-            
-    #         # notif.config(fg ="green", text="Account has been created succesfully")
-    #         register_screen.destroy()
-            
+    
 def register():
     #register vars
     
@@ -495,6 +466,7 @@ def register():
 def login_function():
     global login_name
     global balance_update_update
+    global account_dashboard
     
     all_accounts = os.listdir()
     print(all_accounts)
@@ -547,9 +519,11 @@ def login_function():
                 Button(account_dashboard,text="Investments" ,font=("calibri",12),width=30,command=investments).grid(row=7,sticky=N,padx=10)
                 Button(account_dashboard,text="Home Loan" ,font=("calibri",12),width=30,command=bond).grid(row=8,sticky=N,padx=10)
                 Button(account_dashboard,text="Change password" ,font=("calibri",12),width=30,command=change_password).grid(row=9,sticky=N,padx=10)
+                Label(account_dashboard).grid(row=10,sticky=N)
+                Button(account_dashboard,text="Logout" ,font=("calibri",12),width=15,command=logout, bg="red").grid(row=11,sticky=E,padx=1)
                 
                 #
-                Label(account_dashboard).grid(row=10,sticky=N,pady=10)
+                Label(account_dashboard).grid(row=12,sticky=N,pady=10)
                 return 
             else:
                 login_notif.config(fg ="red", text="Wrong password!*")
@@ -557,6 +531,7 @@ def login_function():
             return
         else:
             login_notif.config(fg ="red", text="Username/Acount does not exist*")
+    
         
 def personal_details():
     #variables 
