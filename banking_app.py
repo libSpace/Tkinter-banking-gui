@@ -345,7 +345,8 @@ def bond():
 
 def finish_reg():
     
-
+    global pop_up
+    
     # Generate a random 7-digit number
     random_middle_part = str(random.randint(1000000, 9999999))
 
@@ -372,11 +373,11 @@ def finish_reg():
 
     pattern = re.compile(r'^(0[1-9]|[1-2][0-9]|3[0-1])(0[1-9]|1[0-2])(1920|19[2-9][0-9]|20[0-1][0-9]|202[0-3])$')
     if pattern.match(id_number):
-        print("Valid date format.")
+        print("Valid ID format.")
     
     else:
-        print("Invalid date format.")
-        err_notif.config(fg="red", text="Invalid date format(ddmmyyyy)")
+        print("Invalid ID format.")
+        err_notif.config(fg="red", text="Invalid ID(ddmmyyyy)")
         return
     
     gender = gender.replace(" ","").strip()
@@ -411,12 +412,27 @@ def finish_reg():
         new_file.write(f"Password   : {password}\n")
         new_file_acc.write(password)
         statement.write(f"Balance = R{amount}")
-        new_file.write(f"ID number        : {id_number}\n")
+        new_file.write(f"ID number  : {id_number}\n")
         new_file.write(f"Gender     : {gender}\n")
         
         # new_file.write(f"Balance    : R0")
         new_file.close()
+        pop_up=Toplevel(root)
+        pop_up.title("Account")
+        Label(pop_up,text=f"Hi {name}, The Mint's account \nhas been succesfully created", font=("Arial",12)).grid(row=0,sticky=N)
+        Label(pop_up,text=f"Name            : {name}").grid(row=1,sticky=W)
+        Label(pop_up,text=f"Account number  : {password}").grid(row=2,sticky=W)
+        Label(pop_up,text=f"Password        : {password}").grid(row=3,sticky=W)
+        Label(pop_up,text=" ").grid(row=4,sticky=W)
+        
+        Button(pop_up,text="OK",command=kill_popup).grid(row=5,sticky=W)
+        
+        Label(pop_up,text=" ").grid(row=6,sticky=W)
+        
         register_screen.destroy()
+
+def kill_popup():
+    pop_up.destroy
     
 def register():
     #register vars
@@ -442,10 +458,10 @@ def register():
     register_screen.title("Register")
     #Labels
     Label(register_screen, text="Enter your details to register", font=("calibri",12)).grid(row=0,sticky=N,pady=10)
-    Label(register_screen, text="Name     ", font=("calibri",12)).grid(row=1,sticky=W)
-    Label(register_screen, text="ID no.      ", font=("calibri",12)).grid(row=2,sticky=W)
-    Label(register_screen, text="Gender   ", font=("calibri",12)).grid(row=3,sticky=W)
-    Label(register_screen, text="password ", font=("calibri",12)).grid(row=4,sticky=W)
+    Label(register_screen, text="Name            : ", font=("calibri",12)).grid(row=1,sticky=W)
+    Label(register_screen, text="ID no.(DDMMYYYY): ", font=("calibri",12)).grid(row=2,sticky=W)
+    Label(register_screen, text="Gender          : ", font=("calibri",12)).grid(row=3,sticky=W)
+    Label(register_screen, text="password        : ", font=("calibri",12)).grid(row=4,sticky=W)
    
     
     
@@ -564,7 +580,7 @@ def forgot_password():
     Label(forgot, text="Username:", font=("calibri",12)).pack()
     Entry(forgot,textvariable=f_username).pack()
     
-    Label(forgot, text="id_number:", font=("calibri",12)).pack()
+    Label(forgot, text="id_number(DDMMYYYY):", font=("calibri",12)).pack()
     Entry(forgot,textvariable=f_id_num).pack()
     
     Label(forgot, text="New PIN :", font=("calibri",12)).pack()
@@ -631,7 +647,9 @@ def submit_change():
         f.close()
         g = open(login_name,'w')
         g.write(new_passw)
+        
         change_pass.destroy()
+        
 
 
 def submit():

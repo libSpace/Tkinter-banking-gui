@@ -1,5 +1,0 @@
-Account no : 935263502
-Name       : Malik
-Password   : 1122qw
-ID number        : 28071990
-Gender     : m
