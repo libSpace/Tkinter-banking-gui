@@ -109,6 +109,7 @@ def withdraw_func():
                 balance_update_update.config(text=updated)
                 
                 withdraw_notif.config(fg ="green", text="Success ")
+                
                 withdraw.destroy()
                 
             else:
@@ -420,9 +421,9 @@ def finish_reg():
         pop_up=Toplevel(root)
         pop_up.title("Account")
         Label(pop_up,text=f"Hi {name}, The Mint's account \nhas been succesfully created", font=("Arial",12)).grid(row=0,sticky=N)
-        Label(pop_up,text=f"Name            : {name}").grid(row=1,sticky=W)
-        Label(pop_up,text=f"Account number  : {password}").grid(row=2,sticky=W)
-        Label(pop_up,text=f"Password        : {password}").grid(row=3,sticky=W)
+        Label(pop_up,text=f"Name     : {name}").grid(row=1,sticky=W)
+        Label(pop_up,text=f"Ac no    : {password}").grid(row=2,sticky=W)
+        Label(pop_up,text=f"Password : {password}").grid(row=3,sticky=W)
         Label(pop_up,text=" ").grid(row=4,sticky=W)
         
         Button(pop_up,text="OK",command=kill_popup).grid(row=5,sticky=W)
@@ -433,6 +434,9 @@ def finish_reg():
 
 def kill_popup():
     pop_up.destroy
+    
+def kill_popup2():
+    sub.destroy()
     
 def register():
     #register vars
@@ -628,7 +632,7 @@ def change_password():
 def submit_change():
     new_passw    = f_new_passwords.get()
     new_passw1   = f1_new_passwords.get() 
-    
+    global sub
     
     forgot_all_accounts = os.listdir()
     #Validated
@@ -649,9 +653,16 @@ def submit_change():
         g.write(new_passw)
         
         change_pass.destroy()
+        sub = Toplevel(root)
+        sub.title("Success")
         
-
-
+        Label(sub, text=f"New pin created succesfully").pack()
+        Label(sub, text=" ").pack()
+        Label(sub, text=f"New pin: {new_passw}").pack()
+        Label(sub, text=" ").pack()
+        Button(sub, text="OK", width=7, command=kill_popup2).pack()
+        Label(sub, text=" ").pack()
+        
 def submit():
     forgot_username = f_username.get()
     forgot_id_number = f_id_num.get()
