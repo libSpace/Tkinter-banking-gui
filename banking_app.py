@@ -189,12 +189,47 @@ def transaction():
     balance_update_update.grid(row=1,sticky=N,pady=10)
     Label(transact, text=t_l_f, font=("calibri",10)).grid(row=2,sticky=W,pady=10)
 
+def comp_years():
+    global principal
+    global rate
+    global time
+    principal = invest_p.get()
+    rate = invest_r.get()
+    time = invest_t.get()
+    
+    principal = principal.replace(" ","").strip()
+    rate = rate.replace(" ","").strip()
+    time = time.replace(" ","").strip()
+    print(principal)
+    print(rate)
+    print(time)
+    
+    if principal.replace('.','',1).isdigit() and rate.replace('.','',1).isdigit and time.isdigit():
+        if principal > 0 and rate > 0 and time >0:
+            print('we still good')
+        else:
+            inve_notif.config(fg="red", text="Positive values")
+    else:
+        inve_notif.config(fg="red", text="Invalid input!")
 
+def comp_months():
+    print(principal)    
+    print("Comp in months")
+def simp_months():
+    print("simp in months")
+def simp_years():
+    print("simp in years")
+    
 def investments():
+    #Global vars
+    global invest_p
+    global invest_r
+    global invest_t
+    global inve_notif
     #variabkes
     invest_p = StringVar()
     invest_r = StringVar()
-    investP = StringVar()
+    invest_t = StringVar()
     
     
     invest_widget = Toplevel(root)
@@ -203,13 +238,21 @@ def investments():
     Label(invest_widget, text="Invesment Dashboard").pack()
     
     Label(invest_widget, text="Principal Amount").pack()
-    Entry(invest_widget,text = principal_aount).pack()
+    Entry(invest_widget,text = invest_p).pack()
     
     Label(invest_widget, text="rate (i)").pack()
-    Entry(invest_widget,text = rate).pack()
+    Entry(invest_widget,text = invest_r).pack()
     
     Label(invest_widget, text="time").pack()
-    Entry(invest_widget,text = principal_aount).pack
+    Entry(invest_widget,text = invest_t).pack()
+    Label(invest_widget, text="").pack()
+    inve_notif = Label(invest_widget)
+    
+    #Buttons
+    Button(invest_widget, text="Compound Interest(time in years)"         , command=comp_years, font=("calibri",12),width=30).pack()
+    Button(invest_widget, text="Compound Interest(time in months)"         , command=comp_months, font=("calibri",12),width=30).pack()
+    Button(invest_widget, text="simple Interest(time in months)"         , command=simp_months, font=("calibri",12),width=30).pack()
+    Button(invest_widget, text="simple interest(time in years)"         , command=simp_years, font=("calibri",12),width=30).pack()
     print("Investments")
     
 def bond():
