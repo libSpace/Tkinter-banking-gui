@@ -5,6 +5,7 @@ import re
 import random
 import secrets
 import string
+import math
 
 #Main screen
 root = Tk()
@@ -16,8 +17,22 @@ root.title("Banking app")
 
 def generate_random_password():
     global password
-    characters = string.ascii_letters + string.digits
-    password = ''.join(secrets.choice(characters) for _ in range(5))
+    # Generate 3 random special characters
+    special_chars = ''.join(secrets.choice(string.punctuation.replace(' ', '')) for _ in range(4))
+
+    # Generate 4 random alphabets (excluding spaces)
+    alphabets = ''.join(secrets.choice(string.ascii_letters.replace(' ', '')) for _ in range(4))
+
+    # Generate 3 random numbers
+    numbers = ''.join(secrets.choice(string.digits) for _ in range(4))
+
+    # Combine the three components to create the final password
+    password = special_chars + alphabets + numbers
+
+    # Shuffle the password to make it more secure
+    password_list = list(password)
+    secrets.SystemRandom().shuffle(password_list)
+    password = ''.join(password_list)
     notif.config(fg="black", text=password)
     
 
@@ -189,107 +204,135 @@ def transaction():
     Label(transact, text=t_l_f, font=("calibri",10)).grid(row=2,sticky=W,pady=10)
 
 def comp_years():
-    global principal
-    global rate
-    global time
-    principal = invest_p.get()
-    rate = invest_r.get()
-    time = invest_t.get()
     
-    principal = principal.replace(" ","").strip()
-    rate = rate.replace(" ","").strip()
-    time = time.replace(" ","").strip()
+    principal1 = invest_p.get()
+    rate1 = invest_r.get()
+    time1 = invest_t.get()
     
-    print(principal)
-    print(rate)
-    print(time)
-    if principal.strip() =="" and rate.strip() =='' and time.strip =='':
+    principal = principal1.replace(" ","").strip()
+    rate = rate1.replace(" ","").strip()
+    time = time1.replace(" ","").strip()
+   
+    if principal =="" and rate =='' and time =='':
         inve_notif.config(fg='red',text='All fields are required')
     else:
-        if principal.replace('.','',1).isdigit() and rate.replace('.','',1).isdigit and time.isdigit():
+        print(principal)
+        print(rate)
+        print(time)
+        if principal.replace('.','',1).isdigit() and rate.replace('.','',1).isdigit and time.replace('.','',1).isdigit():
                     
             time = float(time.replace(".",'',1).strip())
             rate=float(rate.replace(".",'',1).strip())
             principal=float(principal.replace(".",'',1).strip())
             if principal > 0 and rate > 0 and time >0:
                 print('we still good')
+                rate = rate/100
+                value = principal*(1+rate)**(time)
+                inve_notif.config(fg="red", text=f"Future vale = R{value:.2f}")
             else:
                 inve_notif.config(fg="red", text="Positive values")
         else:
             inve_notif.config(fg="red", text="Invalid input!")
 
 def comp_months():
-    principal = principal.replace(" ","").strip()
-    rate = rate.replace(" ","").strip()
-    time = time.replace(" ","").strip()
-    print(principal)
-    print(rate)
-    print(time)
-    if principal.strip() =="" and rate.strip() =='' and time.strip =='':
-        inve_notif.config(fg='red',text='All fields are required')
-    else:
-        if principal.replace('.','',1).isdigit() and rate.replace('.','',1).isdigit and time.isdigit():
-                    
-            time = float(time.replace(".",'',1).strip())
-            rate=float(rate.replace(".",'',1).strip())
-            principal=float(principal.replace(".",'',1).strip())
-            if principal > 0 and rate > 0 and time >0:
-                print('we still good')
-                inve_notif.config(fg="green", text="We good ")
-            else:
-                inve_notif.config(fg="red", text="Positive values")
-                return
-        else:
-            inve_notif.config(fg="red", text="Invalid input!")
-            return
-    print("Comp in months")
     
+    principal1 = invest_p.get()
+    rate1 = invest_r.get()
+    time1 = invest_t.get()
     
+    principal = principal1.replace(" ","").strip()
+    rate = rate1.replace(" ","").strip()
+    time = time1.replace(" ","").strip()
     
-def simp_months():
-    principal = principal.replace(" ","").strip()
-    rate = rate.replace(" ","").strip()
-    time = time.replace(" ","").strip()
-    print(principal)
-    print(rate)
-    print(time)
     if principal =="" and rate =='' and time =='':
         inve_notif.config(fg='red',text='All fields are required')
-        return
     else:
-        if principal.replace('.','',1).isdigit() and rate.replace('.','',1).isdigit and time.isdigit():
+        print(principal)
+        print(rate)
+        print(time)
+        if principal.replace('.','',1).isdigit() and rate.replace('.','',1).isdigit and time.replace('.','',1).isdigit():
                     
             time = float(time.replace(".",'',1).strip())
             rate=float(rate.replace(".",'',1).strip())
             principal=float(principal.replace(".",'',1).strip())
             if principal > 0 and rate > 0 and time >0:
                 print('we still good')
-                inve_notif.config(fg='green', text="we still good simp months")
+                rate = rate/100
+                time = time/12
+                value = principal*(1+rate)**(time)
+                inve_notif.config(fg="red", text=f"Future vale = R{value:.2f}")
+                inve_notif.config(fg="green", text="good")
             else:
                 inve_notif.config(fg="red", text="Positive values")
-                return
         else:
             inve_notif.config(fg="red", text="Invalid input!")
-            return
-    print("simp in months")
+    
+    
+    
+def simp_months(): 
+   
+    principal1 = invest_p.get()
+    rate1 = invest_r.get()
+    time1 = invest_t.get()
+    
+    principal = principal1.replace(" ","").strip()
+    rate = rate1.replace(" ","").strip()
+    time = time1.replace(" ","").strip()
+    
+    if principal =="" and rate =='' and time =='':
+        inve_notif.config(fg='red',text='All fields are required')
+    else:
+        print(principal)
+        print(rate)
+        print(time)
+        if principal.replace('.','',1).isdigit() and rate.replace('.','',1).isdigit and time.replace('.','',1).isdigit():
+                    
+            time = float(time.replace(".",'',1).strip())
+            rate=float(rate.replace(".",'',1).strip())
+            principal=float(principal.replace(".",'',1).strip())
+            if principal > 0 and rate > 0 and time >0:
+                print('we still good')
+                rate = rate/100
+                time = time/12
+                value = principal*(1+rate*time)
+                inve_notif.config(fg="red", text=f"Future vale = R{value:.2f}")
+                inve_notif.config(fg="green", text="good")
+            else:
+                inve_notif.config(fg="red", text="Positive values")
+        else:
+            inve_notif.config(fg="red", text="Invalid input!")
+            
 def logout():
     account_dashboard.destroy()
     
 def simp_years():
-    principal = principal.replace(" ","").strip()
-    rate = rate.replace(" ","").strip()
-    time = time.replace(" ","").strip()
-    print(principal)
-    print(rate)
-    print(time)
+    
+    principal1 = invest_p.get()
+    rate1 = invest_r.get()
+    time1 = invest_t.get()
+    
+    principal = principal1.replace(" ","").strip()
+    rate = rate1.replace(" ","").strip()
+    time = time1.replace(" ","").strip()
+
+    
     if principal =="" and rate =='' and time =='':
         inve_notif.config(fg='red',text='All fields are required')
         return
     else:
+        print(principal)
+        print(rate)
+        print(time)
         if principal.replace('.','',1).isdigit() and rate.replace('.','',1).isdigit and time.isdigit():
+            principal = float(principal)
+            rate = float(rate)
+            time = float(time)
             if principal > 0 and rate > 0 and time >0:
                 print('we still good')
-                inve_notif.config(fg='green',text='simp year goo')
+                rate = rate/100
+                value = principal*(1+rate*time)
+                inve_notif.config(fg="red", text=f"Future vale = R{value:.2f}")
+                inve_notif.config(fg='green',text='simp year good')
             else:
                 inve_notif.config(fg="red", text="Positive values")
                 return
@@ -298,6 +341,10 @@ def simp_years():
             return
 
     print("simp in years")
+    
+    
+    
+
     
     
     
@@ -337,10 +384,114 @@ def investments():
     Button(invest_widget, text="simple Interest(time in months)" , command=simp_months, font=("calibri",12),width=30).pack()
     Button(invest_widget, text="simple interest(time in years)", command=simp_years, font=("calibri",12),width=30).pack()
     print("Investments")
-    
-def bond():
-    print("Home loan")
 
+
+
+def bond():
+    #Global vars
+    global bond_p
+    global bond_r
+    global bond_t
+    global bond_notif
+    global bond_widget
+    #variabkes
+    bond_p = StringVar()
+    bond_r = StringVar()
+    bond_t = StringVar()
+    
+    
+    bond_widget = Toplevel(root)
+    bond_widget.title("Investment Calculator")
+    
+    Label(bond_widget, text="Invesment Dashboard").pack()
+    
+    Label(bond_widget, text="Principal Amount").pack()
+    Entry(bond_widget,text = bond_p).pack()
+    
+    Label(bond_widget, text="rate (i)").pack()
+    Entry(bond_widget,text = bond_r).pack()
+    
+    Label(bond_widget, text="time").pack()
+    Entry(bond_widget,text = bond_t).pack()
+    Label(bond_widget, text="").pack()
+    bond_notif = Label(bond_widget)
+    bond_notif.pack()
+    
+    #Buttons
+    Button(bond_widget, text="Calculate(time in years)" , command=calc, font=("calibri",12),width=30).pack()
+    Button(bond_widget, text="Calculate(time in months)", command=calc_months, font=("calibri",12),width=30).pack()
+    Button(bond_widget, text="exit" , command=exit_bond, font=("calibri",12),width=30).pack()
+   
+    print("Bond")   
+    
+def exit_bond():
+    bond_widget.destroy()
+     
+def calc():
+    principal1 = bond_p.get()
+    rate1 = bond_r.get()
+    time1 = bond_t.get()
+    
+    principal = principal1.replace(" ","").strip()
+    rate = rate1.replace(" ","").strip()
+    time = time1.replace(" ","").strip()
+   
+    if principal =="" and rate =='' and time =='':
+        bond_notif.config(fg='red',text='All fields are required')
+    else:
+        print(principal)
+        print(rate)
+        print(time)
+        if principal.replace('.','',1).isdigit() and rate.replace('.','',1).isdigit and time.replace('.','',1).isdigit():
+                    
+            time = float(time)
+            rate=float(rate)
+            principal=float(principal)
+            if principal > 0 and rate > 0 and time >0:
+                if time <= 100:
+                    print('we still good')
+                    rate = rate/1200
+                    time = time*12
+                    monthly_payment = (rate * principal) / (1 - math.pow((1 + rate),-time))
+                    bond_notif.config(fg="green", text=f"Monthly payment would = R{monthly_payment:.2f}")
+                else:
+                    bond_notif.config(fg="red", text="Interest rate cant be more than 100%")
+            else:
+                bond_notif.config(fg="red", text="Positive values")
+        else:
+            bond_notif.config(fg="red", text="Invalid input!")
+    print("Home loan")
+def calc_months():
+    principal1 = bond_p.get()
+    rate1 = bond_r.get()
+    time1 = bond_t.get()
+    
+    principal = principal1.replace(" ","").strip()
+    rate = rate1.replace(" ","").strip()
+    time = time1.replace(" ","").strip()
+   
+    if principal =="" and rate =='' and time =='':
+        bond_notif.config(fg='red',text='All fields are required')
+    else:
+       
+        if principal.replace('.','',1).isdigit() and rate.replace('.','',1).isdigit and time.replace('.','',1).isdigit():
+                    
+            time = float(time)
+            rate=float(rate)
+            principal=float(principal)
+            if principal > 0 and rate > 0 and time >0:
+                if time <= 100:
+                    print('we still good')
+                    rate = rate/1200
+                    monthly_payment = (rate * principal) / (1 - math.pow((1 + rate),-time))
+                    bond_notif.config(fg="green", text=f"Monthly payment would = R{monthly_payment:.2f}")
+                else:
+                    bond_notif.config(fg="red", text="Interest rate cant be more than 100%")
+            else:
+                bond_notif.config(fg="red", text="Positive values")
+        else:
+            bond_notif.config(fg="red", text="Invalid input!")
+    print("Home loan")
 
 
 
@@ -461,7 +612,7 @@ def register():
     
     register_screen.title("Register")
     #Labels
-    Label(register_screen, text="Enter your details to register", font=("calibri",12)).grid(row=0,sticky=N,pady=10)
+    Label(register_screen, text="Enter your details to register", font=("calibri",12)).grid(row=0,sticky=N)
     Label(register_screen, text="Name            : ", font=("calibri",12)).grid(row=1,sticky=W)
     Label(register_screen, text="ID no.(DDMMYYYY): ", font=("calibri",12)).grid(row=2,sticky=W)
     Label(register_screen, text="Gender          : ", font=("calibri",12)).grid(row=3,sticky=W)
@@ -470,18 +621,18 @@ def register():
     
     
     #Entries
-    Entry(register_screen,textvariable=temp_name).grid(row=1,column=0,padx=70)#Relative padding
-    Entry(register_screen,textvariable=temp_id).grid(row=2,column=0)
-    Entry(register_screen,textvariable=temp_gender).grid(row=3,column=0)
-    Entry(register_screen,textvariable=temp_password, show="*").grid(row=4,column=0)
+    Entry(register_screen,textvariable=temp_name).grid(row=1,column=1,sticky=E,padx=10)#Relative padding
+    Entry(register_screen,textvariable=temp_id).grid(row=2,column=1,sticky=E,padx=10)
+    Entry(register_screen,textvariable=temp_gender).grid(row=3,column=1,sticky=E,padx=10)
+    Entry(register_screen,textvariable=temp_password, show="*").grid(row=4,column=1,sticky=E,padx=10)
     notif = Label(register_screen, font=("calibri",12))
     notif.grid(row=5,sticky=N,pady=10)
     err_notif = Label(register_screen, font=("calibri",12))
     err_notif.grid(row=6,sticky=N,pady=10)
     
     #register button
-    Button(register_screen, text="Register"         , command=finish_reg, font=("calibri",12)).grid(row= 7, sticky=N, pady = 10)
-    Button(register_screen, text="generate password", command=generate_random_password, font=("calibri",12)).grid(row= 8, sticky=N, pady = 10)
+    Button(register_screen, text="Register"         , command=finish_reg, font=("calibri",12),width=25).grid(row= 7,column=0 , sticky=N, pady = 10)
+    Button(register_screen, text="generate password", command=generate_random_password, font=("calibri",12),width=25).grid(row= 7,column=1, sticky=N, pady = 10)
     
 def login_function():
     global login_name
@@ -529,7 +680,7 @@ def login_function():
                 Label(account_dashboard, text="Account dashboard", font=("calibri",15)).grid(row=0,sticky=N,padx=10)
                 balance_update_update = Label(account_dashboard, text =the_curent_bal , font=("calibri",12))
                 balance_update_update.grid(row=1,sticky=N,padx=10)
-                Label(account_dashboard, text = "Welcome", font=("calibri",12)).grid(row=2,sticky=N,padx=10)
+                Label(account_dashboard, text = f"Welcome {login_name}", font=("calibri",12)).grid(row=2,sticky=N,padx=10)
                 
                 #Buttons
                 Button(account_dashboard,text="Personal details", font=("calibri",12),width=30, command= personal_details).grid(row=3,sticky=N,padx=10)
