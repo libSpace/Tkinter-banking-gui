@@ -1,7 +1,0 @@
-Account no : 940332202
-Name       : Malik
-Password   : 1122qw
-ID number  : 12122000
-Gender     : m
-new password : 1133qw
-new password : 1122qw

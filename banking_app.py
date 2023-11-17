@@ -228,7 +228,7 @@ def comp_years():
                 print('we still good')
                 rate = rate/100
                 value = principal*(1+rate)**(time)
-                inve_notif.config(fg="red", text=f"Future vale = R{value:.2f}")
+                inve_notif.config(fg="green", text=f"Future vale = R{value:.2f}")
             else:
                 inve_notif.config(fg="red", text="Positive values")
         else:
@@ -260,8 +260,8 @@ def comp_months():
                 rate = rate/100
                 time = time/12
                 value = principal*(1+rate)**(time)
-                inve_notif.config(fg="red", text=f"Future vale = R{value:.2f}")
-                inve_notif.config(fg="green", text="good")
+                inve_notif.config(fg="green", text=f"Future vale = R{value:.2f}")
+                
             else:
                 inve_notif.config(fg="red", text="Positive values")
         else:
@@ -295,8 +295,8 @@ def simp_months():
                 rate = rate/100
                 time = time/12
                 value = principal*(1+rate*time)
-                inve_notif.config(fg="red", text=f"Future vale = R{value:.2f}")
-                inve_notif.config(fg="green", text="good")
+                inve_notif.config(fg="green", text=f"Future vale = R{value:.2f}")
+            
             else:
                 inve_notif.config(fg="red", text="Positive values")
         else:
@@ -331,8 +331,8 @@ def simp_years():
                 print('we still good')
                 rate = rate/100
                 value = principal*(1+rate*time)
-                inve_notif.config(fg="red", text=f"Future vale = R{value:.2f}")
-                inve_notif.config(fg='green',text='simp year good')
+                inve_notif.config(fg="green", text=f"Future vale = R{value:.2f}")
+               
             else:
                 inve_notif.config(fg="red", text="Positive values")
                 return
@@ -577,13 +577,10 @@ def finish_reg():
         pop_up.title("Account")
         Label(pop_up,text=f"Hi {name}, The Mint's account \nhas been succesfully created", font=("Arial",12)).grid(row=0,sticky=N)
         Label(pop_up,text=f"Name     : {name}").grid(row=1,sticky=W)
-        Label(pop_up,text=f"Ac no    : {password}").grid(row=2,sticky=W)
+        Label(pop_up,text=f"Ac no    : {random_9_digit_number}").grid(row=2,sticky=W)
         Label(pop_up,text=f"Password : {password}").grid(row=3,sticky=W)
         Label(pop_up,text=" ").grid(row=4,sticky=W)
         
-        Button(pop_up,text="OK",command=kill_popup).grid(row=5,sticky=W)
-        
-        Label(pop_up,text=" ").grid(row=6,sticky=W)
         
         register_screen.destroy()
 
@@ -798,6 +795,8 @@ def submit_change():
     
     if new_passw =="" or new_passw1 =="":
         change_notif.config(fg="red", text="All inout fields are important")
+    elif len(new_passw) != 12 and len(new_passw1) != 12:
+        change_notif.config(fg="red", text="Password must be 12 characters")
     elif new_passw1 != new_passw:
         change_notif.config(fg="red", text="Password does not match")
     else:
