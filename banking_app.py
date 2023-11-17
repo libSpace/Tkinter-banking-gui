@@ -16,7 +16,7 @@ root.title("Banking app")
 
 
 def generate_random_password():
-    global password
+    global rand_password
     # Generate 3 random special characters
     special_chars = ''.join(secrets.choice(string.punctuation.replace(' ', '')) for _ in range(4))
 
@@ -32,8 +32,8 @@ def generate_random_password():
     # Shuffle the password to make it more secure
     password_list = list(password)
     secrets.SystemRandom().shuffle(password_list)
-    password = ''.join(password_list)
-    notif.config(fg="black", text=password)
+    rand_password = ''.join(password_list)
+    notif.config(fg="black", text=rand_password)
     
 
 
@@ -522,7 +522,9 @@ def finish_reg():
     if name== "" or id_number == "" or gender == "" or password =="":
         err_notif.config(fg ="red", text="All fields are required*")
         return
-
+    if not name.isalpha():
+        err_notif.config(fg ="red", text="Invalid name*")
+        return
     pattern = re.compile(r'^(0[1-9]|[1-2][0-9]|3[0-1])(0[1-9]|1[0-2])(1920|19[2-9][0-9]|20[0-1][0-9]|202[0-3])$')
     if pattern.match(id_number):
         print("Valid ID format.")
@@ -537,7 +539,9 @@ def finish_reg():
         print("Gender must be either (male, female, m, f)")
         err_notif.config(fg='red',text='Gender must be either (male, female, m, f)')
         return
-  
+    if len(password) != 12:
+        err_notif.config(fg='red',text='Password must be 12 characters')
+        return 
     # Initialize variables
     found = False
     index = 0
