@@ -52,6 +52,9 @@ def add_deposit():
     print(deposit_amount)
     if deposit_amount.replace('.','',1).isdigit():
         deposit_amount = float(deposit_amount.strip())
+        if deposit_amount == 0:
+            deposit_notif.config(fg ="red", text="You can not deposit nothing! ")
+            return
         if deposit_amount >0 and deposit_amount%10 == 0:
             bal_fl += deposit_amount
             
@@ -77,7 +80,7 @@ def add_deposit():
             deposits_tk.destroy()
             
         else:
-            deposit_notif.config(fg ="red", text="You can not deposit less than 0 or coins ")
+            deposit_notif.config(fg ="red", text="You can not deposit coins ")
             return
     else:
         deposit_notif.config(fg ="red", text="Invalid input")
@@ -102,36 +105,40 @@ def withdraw_func():
     print(withdraw_amount)
     if withdraw_amount.replace('.','',1).isdigit():
         withdraw_amount = float(withdraw_amount.strip())
-        if  0 < withdraw_amount < bal_fl: 
-            if withdraw_amount%10 == 0:
-                bal_fl -= withdraw_amount
-                #Update the transactional log
-                update_trans_log = open(login_name+"log",'a')
-                update_trans_log.writelines(f"Withdraw: -R{withdraw_amount}\n")
-                
-                updated = f"Balance = R{bal_fl}"
-                print(updated)
-                #Lets open the file to update the balance
-                balance_file = open(login_name+"_balance_update.txt", "r")
-                bf = balance_file.readlines()
-                print("before")
-                print(bf)
-                #Deleting infor
-                balance_file_update = open(login_name+"_balance_update.txt", "w")
-                balance_file_update.write(updated)
-                
-                print(updated)
-                balance_update_update.config(text=updated)
-                
-                withdraw_notif.config(fg ="green", text="Success ")
-                
-                withdraw.destroy()
-                
+        if withdraw_amount > 0:
+            if  withdraw_amount <= bal_fl : 
+                if withdraw_amount%10 == 0:
+                    bal_fl -= withdraw_amount
+                    #Update the transactional log
+                    update_trans_log = open(login_name+"log",'a')
+                    update_trans_log.writelines(f"Withdraw: -R{withdraw_amount}\n")
+                    
+                    updated = f"Balance = R{bal_fl}"
+                    print(updated)
+                    #Lets open the file to update the balance
+                    balance_file = open(login_name+"_balance_update.txt", "r")
+                    bf = balance_file.readlines()
+                    print("before")
+                    print(bf)
+                    #Deleting infor
+                    balance_file_update = open(login_name+"_balance_update.txt", "w")
+                    balance_file_update.write(updated)
+                    
+                    print(updated)
+                    balance_update_update.config(text=updated)
+                    
+                    withdraw_notif.config(fg ="green", text="Success ")
+                    
+                    withdraw.destroy()
+                    
+                else:
+                    withdraw_notif.config(fg ="red", text="You can not withdraw coins ")
+                    return
             else:
-                withdraw_notif.config(fg ="red", text="You can not withdraw coins ")
+                withdraw_notif.config(fg="red", text="Insufficient funds")
                 return
         else:
-            withdraw_notif.config(fg="red", text="Insufficient funds")
+            withdraw_notif.config(fg="red", text="Lutho, is that you?\nYou cant withdraw nothing")
             return
     else:
         withdraw_notif.config(fg ="red", text="Invalid input")
@@ -678,10 +685,10 @@ def login_function():
                 
                 #Labels
                 print(login_name)
-                Label(account_dashboard, text="Account dashboard", font=("calibri",15)).grid(row=0,sticky=N,padx=10)
+                Label(account_dashboard, text=f"{login_name}'s Account dashboard", font=("calibri",18)).grid(row=0,sticky=N,padx=10)
                 balance_update_update = Label(account_dashboard, text =the_curent_bal , font=("calibri",12))
-                balance_update_update.grid(row=1,sticky=N,padx=10)
-                Label(account_dashboard, text = f"Welcome {login_name}", font=("calibri",12)).grid(row=2,sticky=N,padx=10)
+                balance_update_update.grid(row=2,sticky=N,padx=10)
+                Label(account_dashboard, text = f"Welcome to The Mint", font=("calibri",12)).grid(row=1,sticky=N,padx=10)
                 
                 #Buttons
                 Button(account_dashboard,text="Personal details", font=("calibri",12),width=30, command= personal_details).grid(row=3,sticky=N,padx=10)
@@ -722,6 +729,7 @@ def forgot_password():
     global for_notif
     global f_new_password
     global f1_new_password
+    global forgot
     f_username = StringVar()
     f_id_num = StringVar()  
     f_new_password = StringVar()
@@ -740,10 +748,10 @@ def forgot_password():
     Entry(forgot,textvariable=f_id_num).pack()
     
     Label(forgot, text="New PIN :", font=("calibri",12)).pack()
-    Entry(forgot,textvariable=f_new_password).pack()
+    Entry(forgot,textvariable=f_new_password, show="*").pack()
     
     Label(forgot, text="Confirm PIN:", font=("calibri",12)).pack()
-    Entry(forgot,textvariable=f1_new_password).pack()
+    Entry(forgot,textvariable=f1_new_password, show="*").pack()
     
     for_notif = Label(forgot, font=("calibri",12))
     for_notif.pack() 
@@ -768,10 +776,10 @@ def change_password():
     Label(change_pass, text="Change password", font=("calibri",12)).pack()
     
     Label(change_pass, text="New PIN :", font=("calibri",12)).pack()
-    Entry(change_pass,textvariable=f_new_passwords).pack()
+    Entry(change_pass,textvariable=f_new_passwords, show="*").pack()
     
     Label(change_pass, text="Confirm PIN:", font=("calibri",12)).pack()
-    Entry(change_pass,textvariable=f1_new_passwords).pack()
+    Entry(change_pass,textvariable=f1_new_passwords, show="*").pack()
     
     change_notif = Label(change_pass, font=("calibri",12))
     change_notif.pack() 
@@ -859,20 +867,32 @@ def submit():
         if found:
             print(f"{forgot_username} exists in the list")
             if pattern.match(forgot_id_number):
-                forgot = open(f"{forgot_username}.txt", "r")
-                forgot_files = forgot.readlines()
+                forgots = open(f"{forgot_username}.txt", "r")
+                forgot_files = forgots.readlines()
                 id_after_colon = forgot_files[3].split(':')[1].strip()
                 if forgot_id_number == id_after_colon:
-                    if new_password == new_password1:
-                        app = open(forgot_username,'w')
-                        app.write(new_password)
-                        app.close()
-                        update_new_pass = open(f"{forgot_username}.txt","a")
-                        update_new_pass.writelines(f"new password : {new_password}\n")
-                        # forgot.destroy()
-                        return
+                    if len(new_password) ==12:
+                        if new_password == new_password1:
+                            app = open(forgot_username,'w')
+                            app.write(new_password)
+                            app.close()
+                            update_new_pass = open(f"{forgot_username}.txt","a")
+                            update_new_pass.writelines(f"new password : {new_password}\n")
+                            
+                            forgot.destroy()
+                            notify_pop=Toplevel(root)
+                            
+                            notify_pop.title("New password")
+                            
+                            Label(notify_pop,text=f"Hi {forgot_username}").pack()
+                            Label(notify_pop,text="You have succesfully changed your password").pack()
+                            # forgot.destroy()
+                            return
+                        else:
+                            for_notif.config(fg="red", text="Passwords does not match")
+                            return
                     else:
-                        for_notif.config(fg="red", text="Passwords does not match")
+                        for_notif.config(fg="red", text="Passwords must have 12 characters")
                         return
                 else:
                     for_notif.config(fg="red", text="Wrong ID number")  
